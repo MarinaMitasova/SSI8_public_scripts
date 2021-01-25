@@ -1,0 +1,350 @@
+<style>
+#[% QuestionName() %]_div {
+	visibility: hidden;
+}
+
+.customdropdown_control {
+	border: 1px solid rgb(169, 169, 169);
+	padding: 4px;
+	cursor: pointer;
+	font-size: 13px;
+}
+
+.customdropdown_input {
+	border: 0px !important;
+	outline: none;
+}
+
+.customdropdown_nonsearchablediv {
+	display: inline-block;
+	overflow-x: hidden;
+}
+
+.customdropdown_nonsearchableinput {
+	position: fixed;
+	z-index: -99999;
+	opacity: 0;
+}
+
+.customdropdown_arrow {
+	font-size: 12px;
+	padding: 4px;
+}
+
+.customdropdown_dropdown {
+	position: fixed;
+	z-index: 99999;
+	background-color: white;
+	border: 1px solid rgb(169, 169, 169);
+	border-top: 0px;
+	padding: 4px;
+	font-size: 13px;
+	max-height: 300px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.customdropdown_dropdown .graphical_select {
+	background-size: 16px;
+}
+
+.customdropdown_dropdown .customdropdown_noresults {
+	display: none;
+	color: red;
+	font-size: 12px;
+}
+</style>
+
+<script>
+$(document).ready(function(){
+	// Settings
+	var searchable = true;
+	var closeDropdownOnSelection = true;
+	var hideInputElements = true;
+	
+	var closedDropdownSymbol = '▼';
+	var openedDropdownSymbol = '▲';
+	var placeholderDropdownText = 'начните вводить город';
+	var noResultsDropdownText = 'Результаты не найдены';
+	var other = [85];
+	var closedDropdownText = function(selectedItems) {
+		// Good preset for radio buttons: shows selected item label if an item is selected, or "Select an option."
+		if (selectedItems.length) {
+			var selectedItem = selectedItems[0];
+			var labs = $('#[% QuestionName() %]_' + selectedItem).closest('.clickable').find('label');
+			if (labs.length == 1) {
+				var answ = labs.text()
+			}else{
+				answ = labs.eq(0).text() + ' (' + $('#[% QuestionName() %]_' + selectedItem).closest('.clickable').find("[type='text']").val() + ')'	
+			}
+			return answ;
+		}
+		else {
+			return 'Выберите из списка';
+		}
+		
+		// Good preset for checkboxes: shows "X options selected" if an item is selected, or "Select options."
+		var numberOfSelectedItems = selectedItems.length;
+		switch (numberOfSelectedItems) {
+			case 0:
+				return 'Select options';
+				break;
+			case 1:
+				return '1 option selected';
+				break;
+			default:
+				return numberOfSelectedItems + ' options selected';
+				break;
+		}
+	}
+	
+	// Modify HTML
+	var wrapper = $('<div id="[% QuestionName() %]_customdropdown"></div>');
+	var control = $('<div class="customdropdown_control"></div>');
+	var dropdown = $('<div class="customdropdown_dropdown"></div>');
+	
+	$('#[% QuestionName() %]_div .response_body').after($(wrapper));
+	$(wrapper).append($(control));
+	if (searchable) {
+		$(control).append('<input type="text" class="customdropdown_input customdropdown_searchableinput" placeholder="' + placeholderDropdownText + '"/>');
+	}
+	else {
+		$(control).append('<div type="text" class="customdropdown_nonsearchablediv"></div>');
+		$(control).append('<input type="text" class="customdropdown_input customdropdown_nonsearchableinput"/>'); // a non-hidden input is required for down arrow event
+	}
+	$(control).append('<span class="customdropdown_arrow">' + closedDropdownSymbol + '</span>');
+	$(wrapper).append($(dropdown));
+	$(dropdown).append($('#[% QuestionName() %]_div .clickable'));
+	if (searchable) {
+		$(dropdown).append('<div class="customdropdown_noresults">' + noResultsDropdownText + '</div>');
+	}
+	
+	$('#[% QuestionName() %]_div .mobile_select').removeClass('mobile_select');
+	
+	// Styling
+	if (hideInputElements) {
+		var inputCellContents = $('#[% QuestionName() %]_customdropdown .customdropdown_dropdown .input_cell *');
+		$(inputCellContents).css('opacity', '0');
+		$(inputCellContents).css('width', '0px');
+		$(inputCellContents).css('margin', '0px');
+		$(inputCellContents).css('padding', '0px');
+	}
+	
+	var dropdownWidth = $('#[% QuestionName() %]_div .customdropdown_dropdown').outerWidth();
+	var arrowWidth = $('#[% QuestionName() %]_div .customdropdown_arrow').outerWidth();
+	var totalWidth = dropdownWidth + arrowWidth;
+	if (totalWidth < 200) {
+		totalWidth = 200;
+	}
+	if (totalWidth > 600) {
+		totalWidth = 600;
+	}
+	$('#[% QuestionName() %]_div .customdropdown_control').outerWidth(totalWidth);
+	$('#[% QuestionName() %]_div .customdropdown_input, #[% QuestionName() %]_div .customdropdown_nonsearchablediv').outerWidth(totalWidth - arrowWidth - 12);
+	$('#[% QuestionName() %]_div .customdropdown_dropdown').outerWidth(totalWidth);
+	
+	// Show and hide dropdown
+	var isRadioButtonQuestion = $('#[% QuestionName() %]_div input[type=radio]').length;
+	var items = $('input[name="hid_list_[% QuestionName() %]"]').val().split(',').map(Number);
+	var updateClosedDropdownText = function() {
+		var text;
+		if (isRadioButtonQuestion) {
+			var response = SSI_GetValue('[% QuestionName() %]');
+			if (response) {
+				text = closedDropdownText([response]);
+			}
+			else {
+				text = closedDropdownText([]);
+			}
+		}
+		else {
+			var params = [];
+			items.forEach(function(item){
+				if (SSI_GetValue('[% QuestionName() %]_' + item)) {
+					params.push(item);
+				}
+			});
+			text = closedDropdownText(params);
+		}
+		$('#[% QuestionName() %]_div .customdropdown_input').val(text);
+		$('#[% QuestionName() %]_div .customdropdown_nonsearchablediv').text(text);
+	};
+	
+	var toggleDropdown = function(show) {
+		var visible = $('#[% QuestionName() %]_customdropdown .customdropdown_dropdown').is(':visible');
+		
+		if (show === null || show === undefined) {
+			show = !visible;
+		}
+		
+		if (show) {
+			if (!visible) {
+				$('#[% QuestionName() %]_customdropdown .customdropdown_dropdown .clickable').show();
+				$('#[% QuestionName() %]_customdropdown .customdropdown_input').val('');
+			}
+			
+			$('#[% QuestionName() %]_customdropdown .customdropdown_dropdown').show();
+			$('#[% QuestionName() %]_customdropdown .customdropdown_arrow').text(openedDropdownSymbol);
+			$('#[% QuestionName() %]_customdropdown .customdropdown_control').css('border-color', 'dodgerblue');
+			$('#[% QuestionName() %]_customdropdown .customdropdown_nonsearchableinput').val(closedDropdownText([]));
+			
+			var input = $('#[% QuestionName() %]_customdropdown .customdropdown_input');
+			if (!$(input).is(':focus')) {
+				$(input).focus();
+			}
+		}
+		
+		else if (visible) {
+			$('#[% QuestionName() %]_customdropdown .customdropdown_dropdown').hide();
+			$('#[% QuestionName() %]_customdropdown .customdropdown_arrow').text(closedDropdownSymbol);
+			$('#[% QuestionName() %]_customdropdown .customdropdown_control').css('border-color', 'rgb(169, 169, 169)');
+			updateClosedDropdownText();
+			$('#[% QuestionName() %]_customdropdown .customdropdown_input').blur();
+			
+			previousSearch = '';
+		}
+		
+		return show;
+	}
+	
+	$(document).on('click', function(e){
+		// Clicked on arrow
+		if ($(e.target).closest('#[% QuestionName() %]_customdropdown .customdropdown_arrow').length) {
+			toggleDropdown();
+		}
+		
+		// Clicked on control
+		else if ($(e.target).closest('#[% QuestionName() %]_customdropdown .customdropdown_control').length) {
+			toggleDropdown(true);
+		}
+		
+		// Clicked on dropdown
+		else if ($(e.target).closest('#[% QuestionName() %]_customdropdown .customdropdown_dropdown').length) {
+			if (!searchable) {
+				updateClosedDropdownText();
+			}
+			if (closeDropdownOnSelection && $(e.target).closest('#[% QuestionName() %]_customdropdown .clickable').length) {
+				toggleDropdown(false);
+			}
+		}
+		
+		// Clicked elsewhere
+		else {
+			toggleDropdown(false);
+		}
+	});
+	
+	$(document).on('lighthouseRadioButtonChanged lighthouseCheckboxChanged', function(event, graphicalObj, inputObj){
+		if (/^[% QuestionName() %]_/.test(inputObj.id)) {
+			updateClosedDropdownText();
+			if (closeDropdownOnSelection) {
+				toggleDropdown(false);
+			}
+			else {
+				$(inputObj).focus();
+				$(graphicalObj).focus();
+			}
+		}
+	});
+	
+	// Show question
+	toggleDropdown(false);
+	$('#[% QuestionName() %]_div').css('visibility', 'visible');
+	
+	// Search
+	var previousSearch = '';
+	var runSearch = function() {
+		var search = $('#[% QuestionName() %]_customdropdown .customdropdown_searchableinput').val().trim();
+		if (!search) {
+			$('#[% QuestionName() %]_customdropdown .customdropdown_dropdown .clickable').show();
+			$('#[% QuestionName() %]_customdropdown .customdropdown_noresults').hide();
+		}
+		else {
+			var cssSelector = '#[% QuestionName() %]_customdropdown .customdropdown_dropdown .clickable';
+			if (search.indexOf(previousSearch) != -1) {
+				cssSelector += ':visible';
+			}
+			
+			var foundMatch = false;
+			$(cssSelector).each(function(){
+				var label = $(this).find('label').text();
+				var match = label.toLowerCase().indexOf(search.toLowerCase()) != -1;
+				var isOther = ~other.indexOf(+$(this).find("[type='radio'],[type='checkbox']").attr("id").split("_")[1])
+				if (isOther) {
+					match = true;	
+					$(this).find("[type='text']").val(search)
+				}
+				$(this).toggle(match);
+				foundMatch = match ? true : foundMatch;
+			});
+			$('#[% QuestionName() %]_customdropdown .customdropdown_noresults').toggle(!foundMatch);
+		}
+		previousSearch = search;
+	}
+	
+	var searchTimeout;
+	$('#[% QuestionName() %]_customdropdown .customdropdown_searchableinput').on('input', function(){
+		clearTimeout(searchTimeout);
+		searchTimeout = setTimeout(runSearch, 200);
+	});
+	
+	// Key events
+	$(document).keydown(function(e){
+		switch (e.which) {	
+			// Enter key
+			case 13:
+				$(':focus').closest('#[% QuestionName() %]_customdropdown .customdropdown_dropdown .clickable').click();
+				break;
+				
+			// Up arrow key
+			case 38:
+				var focus = $(':focus');
+				// Focused on first item
+				if ($(focus).closest($('#[% QuestionName() %]_customdropdown .customdropdown_dropdown .clickable:visible').eq(0)).length) {
+					var searchableInput = $('#[% QuestionName() %]_customdropdown .customdropdown_searchableinput');
+					if (searchableInput.length) {
+						$(searchableInput).focus();
+						setTimeout(function(){
+							var searchLength = $(searchableInput).val().length;
+							$(searchableInput).get(0).setSelectionRange(searchLength, searchLength);
+						}, 1);
+					}
+					e.preventDefault();
+				}
+				// Focused on other item
+				else {
+					var clickable = $(focus).closest('#[% QuestionName() %]_customdropdown .customdropdown_dropdown .clickable');
+					if (clickable.length) {
+						var previousClickable = $(clickable).prevAll('.clickable:visible').eq(0);
+						$(previousClickable).find('input:visible').focus();
+						$(previousClickable).find('.graphical_select').focus();
+						e.preventDefault();
+					}
+				}
+				break;
+			
+			// Down arrow key
+			case 40:
+				var focus = $(':focus');
+				// Focused on control
+				if ($(focus).closest('#[% QuestionName() %]_customdropdown .customdropdown_control').length) {
+					var firstClickable = $('#[% QuestionName() %]_customdropdown .customdropdown_dropdown .clickable:visible').eq(0);
+					$(firstClickable).find('input:visible').focus();
+					$(firstClickable).find('.graphical_select').focus();
+					e.preventDefault();
+				}
+				// Focused on item
+				else {
+					var clickable = $(focus).closest('#[% QuestionName() %]_customdropdown .customdropdown_dropdown .clickable');
+					if ($(clickable).length) {
+						var nextClickable = $(clickable).nextAll('.clickable:visible').eq(0);
+						$(nextClickable).find('input:visible').focus();
+						$(nextClickable).find('.graphical_select').focus();
+						e.preventDefault();
+					}
+				}
+				break;
+		}
+	});
+})
+</script>
