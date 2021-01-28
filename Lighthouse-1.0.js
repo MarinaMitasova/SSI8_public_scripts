@@ -56,7 +56,9 @@
 			}
 			
 			arr[x].inps.val("")
-			arr[x].chb.not(inputObj).prop("checked", false);
+			arr[x].chb.not(inputObj).get().forEach(function(chb){
+				SSI_SetSelect(chb.id, 0)
+			})
 			
 			if(quesDirection == "inColumns" && other.length) other.val("");
 		}
@@ -70,8 +72,9 @@
 				x = this.id.split("_")[2].replace("c", "");
 			}
 			
-			arr[x].chb.prop("checked", false);
-			
+			arr[x].chb.get().forEach(function(chb){
+				SSI_SetSelect(chb.id, 0)
+			})
 		}
 	});
 	if(quesDirection == "inColumns" && other.length){
