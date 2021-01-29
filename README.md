@@ -2,6 +2,10 @@
 
 Для работы необходимо подключить библиотеку `BetterLighthouseLibrary`
 
+# Содержание
+[Функции в Lighthouse.js](##Функции в Lighthouse.js (последняя версия Lighthouse-1.0.js))
+	[changeInputTextOrExclusive](###changeInputTextOrExclusive(opts))
+
 ## Функции в Lighthouse.js (последняя версия Lighthouse-1.0.js)
 
 ### changeInputTextOrExclusive(opts)
