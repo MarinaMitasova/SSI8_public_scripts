@@ -59,3 +59,46 @@ $(function(){
 strErrorMessage = checkInputTextOrExclusive({ques: "[%QUESTIONNAME()%]"});
 strErrorMessage = checkInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLocation: "inRows", inputsCheck: "every"});
 ```
+
+### otherByColumnsInTable(opts)
+
+Всплывающее уточнение для Другого по столбцам (Уточнения для Другого в таблице)
+
+**Особенности работы функции:**
+
+* Аргументы задаются в виде объекта
+* Работает на вопросах типа grid (checkBoxes, options)
+
+**Свойства объекта-аргумента**
+
+*ques* (обязательный) – имя вопроса  
+*other* (обязательный) – номер строки “Другое”
+*nameOther* (default:=ques+"other") – общая часть имени вопросов для уточнения
+*otherLocation*(default:="inColumns") – расположение полей для уточнения. inRows - уточнения расположены в строках, inColumns - уточнения расположены в столбцах
+
+**Примеры:**
+```html
+<script>
+$(function(){
+	var q = {
+		ques: "[%QUESTIONNAME()%]",
+		other: 5
+	};
+	otherByColumnsInTable(q);
+})
+</script>
+```
+
+```html
+<script>
+$(function(){
+	var q = {
+		ques: "[%QUESTIONNAME()%]",
+		other: 5,
+    nameOther: "[%QUESTIONNAME()%]Comm",
+		otherLocation: "inRows"
+	};
+	otherByColumnsInTable(q);
+})
+</script>
+```
