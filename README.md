@@ -6,8 +6,9 @@
 [Функции в Lighthouse.js](#Lighthouse_js)  
 * [changeInputTextOrExclusive](#changeInputTextOrExclusive)
 * [checkInputTextOrExclusive](#checkInputTextOrExclusive)
-* [otherByColumnsInTable](#otherByColumnsInTable)
+* [otherByColumnsInTable](#otherByColumnsInTable)  
 [Шаблоны вопросов Libraries_ques](#Libraries_ques) 
+* [City](#City)
 
 ## Функции в Lighthouse.js (последняя версия Lighthouse-1.0.js)<a name="Lighthouse_js"></a>
 
@@ -111,3 +112,8 @@ $(function(){
 ```
 
 ## Шаблоны вопросов Libraries_ques<a name="Libraries_ques"></a>
+
+### City<a name="City"></a>
+
+Выпадающий список с фильтрацией при вводе текста.
+В строке `	var other = [85];` указать актуальные номера вариантов для уточнения.
