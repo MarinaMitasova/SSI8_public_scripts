@@ -3,11 +3,11 @@
 Для работы необходимо подключить библиотеку `BetterLighthouseLibrary`
 
 # Содержание
-**[Функции в Lighthouse.js]**(#Lighthouse_js)  
+[Функции в Lighthouse.js](#Lighthouse_js)  
 * [changeInputTextOrExclusive](#changeInputTextOrExclusive)
 * [checkInputTextOrExclusive](#checkInputTextOrExclusive)
 * [otherByColumnsInTable](#otherByColumnsInTable)
-**[Шаблоны вопросов Libraries_ques]**(#Libraries_ques) 
+[Шаблоны вопросов Libraries_ques](#Libraries_ques) 
 
 ## Функции в Lighthouse.js (последняя версия Lighthouse-1.0.js)<a name="Lighthouse_js"></a>
 
