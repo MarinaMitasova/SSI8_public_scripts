@@ -72,8 +72,8 @@ strErrorMessage = checkInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLoc
 **Свойства объекта-аргумента**
 
 *ques* (обязательный) – имя вопроса  
-*other* (обязательный) – номер строки “Другое”
-*nameOther* (default:=ques+"other") – общая часть имени вопросов для уточнения
+*other* (обязательный) – номер строки “Другое”  
+*nameOther* (default:=ques+"other") – общая часть имени вопросов для уточнения  
 *otherLocation*(default:="inColumns") – расположение полей для уточнения. inRows - уточнения расположены в строках, inColumns - уточнения расположены в столбцах
 
 **Примеры:**
