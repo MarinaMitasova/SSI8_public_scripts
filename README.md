@@ -7,6 +7,7 @@
 * [changeInputTextOrExclusive](#changeInputTextOrExclusive)
 * [checkInputTextOrExclusive](#checkInputTextOrExclusive)
 * [otherByColumnsInTable](#otherByColumnsInTable)  
+
 [Шаблоны вопросов Libraries_ques](#Libraries_ques) 
 * [City](#City)
 
