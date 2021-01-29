@@ -3,8 +3,11 @@
 Для работы необходимо подключить библиотеку `BetterLighthouseLibrary`
 
 # Содержание
-[Функции в Lighthouse.js](#Lighthouse_js)  
-	[changeInputTextOrExclusive](#changeInputTextOrExclusive)
+**[Функции в Lighthouse.js]**(#Lighthouse_js)  
+* [changeInputTextOrExclusive](#changeInputTextOrExclusive)
+* [checkInputTextOrExclusive](#checkInputTextOrExclusive)
+* [otherByColumnsInTable](#otherByColumnsInTable)
+**[Шаблоны вопросов Libraries_ques]**(#Libraries_ques) 
 
 ## Функции в Lighthouse.js (последняя версия Lighthouse-1.0.js)<a name="Lighthouse_js"></a>
 
@@ -39,7 +42,7 @@ $(function(){
 </script>
 ```
 
-### checkInputTextOrExclusive(opts)
+### checkInputTextOrExclusive(opts)<a name="checkInputTextOrExclusive"></a>
 
 Проверка наличия ответа в строке/столбце для вопросов, содержащих числовые/текстовые поля и/или галочки exclusive (з/о)
 
@@ -64,7 +67,7 @@ strErrorMessage = checkInputTextOrExclusive({ques: "[%QUESTIONNAME()%]"});
 strErrorMessage = checkInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLocation: "inRows", inputsCheck: "every"});
 ```
 
-### otherByColumnsInTable(opts)
+### otherByColumnsInTable(opts)<a name="otherByColumnsInTable"></a>
 
 Всплывающее уточнение для Другого по столбцам (Уточнения для Другого в таблице)
 
@@ -106,3 +109,5 @@ $(function(){
 })
 </script>
 ```
+
+## Шаблоны вопросов Libraries_ques<a name="Libraries_ques"></a>
