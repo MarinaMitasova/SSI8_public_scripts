@@ -3,12 +3,12 @@
 Для работы необходимо подключить библиотеку `BetterLighthouseLibrary`
 
 # Содержание
-[Функции в Lighthouse.js](##Функции в Lighthouse.js (последняя версия Lighthouse-1.0.js))
-	[changeInputTextOrExclusive](###changeInputTextOrExclusive(opts))
+[Функции в Lighthouse.js](#Lighthouse_js)  
+	[changeInputTextOrExclusive](#changeInputTextOrExclusive)
 
-## Функции в Lighthouse.js (последняя версия Lighthouse-1.0.js)
+## Функции в Lighthouse.js (последняя версия Lighthouse-1.0.js)<a name="Lighthouse_js"></a>
 
-### changeInputTextOrExclusive(opts)
+### changeInputTextOrExclusive(opts)<a name="changeInputTextOrExclusive"></a>
 
 Очищает ответы по строке/столбцу для вопросов, содержащих числовые/текстовые поля и/или галочки exclusive (з/о)
 
