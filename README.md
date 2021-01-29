@@ -22,7 +22,7 @@
 ```html
 <script>
 $(function(){
-  changeInputTextOrExclusive({ques: "[%QUESTIONNAME()%]"});
+	changeInputTextOrExclusive({ques: "[%QUESTIONNAME()%]"});
 });
 </script>
 ```
@@ -30,7 +30,7 @@ $(function(){
 ```html
 <script>
 $(function(){
-  changeInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLocation: "inRows"});
+	changeInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLocation: "inRows"});
 });
 </script>
 ```
@@ -95,7 +95,7 @@ $(function(){
 	var q = {
 		ques: "[%QUESTIONNAME()%]",
 		other: 5,
-    nameOther: "[%QUESTIONNAME()%]Comm",
+		nameOther: "[%QUESTIONNAME()%]Comm",
 		otherLocation: "inRows"
 	};
 	otherByColumnsInTable(q);
