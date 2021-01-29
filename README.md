@@ -67,7 +67,7 @@ strErrorMessage = checkInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLoc
 **Особенности работы функции:**
 
 * Аргументы задаются в виде объекта
-* Работает на вопросах типа grid (checkBoxes, options)
+* Работает на вопросах типа grid (checkbox, radio)
 
 **Свойства объекта-аргумента**
 
