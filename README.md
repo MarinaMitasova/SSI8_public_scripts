@@ -7,6 +7,7 @@
 * [changeInputTextOrExclusive](#changeInputTextOrExclusive)
 * [checkInputTextOrExclusive](#checkInputTextOrExclusive)
 * [otherByColumnsInTable](#otherByColumnsInTable)  
+* [otherByRowsInTable](#otherByRowsInTable) 
 
 [Шаблоны вопросов Libraries_ques](#Libraries_ques) 
 * [City](#City)
@@ -108,6 +109,47 @@ $(function(){
 		otherLocation: "inRows"
 	};
 	otherByColumnsInTable(q);
+})
+</script>
+```
+
+### otherByRowsInTable(opts)<a name="otherByRowsInTable"></a>
+
+Всплывающее уточнение для Другого по строкам (Уточнения для Другого в таблице)
+
+**Особенности работы функции:**
+
+* Аргументы задаются в виде объекта
+* Работает на вопросах типа grid (checkbox, radio)
+
+**Свойства объекта-аргумента**
+
+*ques* (обязательный) – имя вопроса  
+*other* (обязательный) – номер строки “Другое”  
+*nameOther* (default:=ques+"other") – общая часть имени вопросов для уточнения  
+
+**Примеры:**
+```html
+<script>
+$(function(){
+	var q = {
+		ques: "[%QUESTIONNAME()%]",
+		other: 5
+	};
+	otherByRowsInTable(q);
+})
+</script>
+```
+
+```html
+<script>
+$(function(){
+	var q = {
+		ques: "[%QUESTIONNAME()%]",
+		other: 5,
+		nameOther: "[%QUESTIONNAME()%]Comm"
+	};
+	otherByRowsInTable(q);
 })
 </script>
 ```

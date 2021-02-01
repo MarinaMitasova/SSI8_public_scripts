@@ -300,3 +300,68 @@ function otherByColumnsInTable(opts){
 		}
 	}
 }
+
+function otherByRowsInTable(opts){
+
+    checkArguments(arguments, opts);
+    var ques = opts.ques;
+    
+	if (opts.other === undefined || opts.other === ""){
+		throw "Номер столбца-уточнения не задан или является пустой строкой!"
+	}
+	switch (Object.prototype.toString.call(opts.other)){
+		case "[object Number]":
+            var other = opts.other.toString();
+			break;
+		case "[object String]":
+		default:
+			throw "Номер столбца-уточнения `other` должен быть числом!"
+	}
+	var nameOther = opts.nameOther === undefined ? ques+"other" : opts.nameOther;
+	if (nameOther.toString() !== nameOther || nameOther === ""){
+		throw "Переменная nameOther должна быть строкой и \nсодержать в себе общую часть имени вопросов-уточнения!";
+	}
+
+	$("div[id^='" + nameOther + "']").find("input[type='text'], textarea").each(function() {
+		$(this).parents("tr:first").hide();
+		if ($(this).val() == ""){
+			$(this).val("none");
+		}
+	});
+
+	$("#" + ques + "_div").find("input[type='checkbox'], input[type='radio']").each(function(i, answ) {
+		showOrHideOther(answ);
+    });
+    
+	$(document).on('lighthouseCheckboxChanged lighthouseRadioButtonChanged', function(event, graphicalObj, inputObj, bln) {
+        var reg = new RegExp(ques + "_.+");
+        if (reg.test(inputObj.id)){
+            showOrHideOther(inputObj);
+        }
+    });
+
+	function showOrHideOther(answ){
+		var id, r, c, rad, chb, elOther;
+		id = $(answ).attr('id');
+		r = id.split('_')[1].replace("r", "");
+		c = id.split('_')[2].replace("c", "");
+		chb = "#" + ques + "_r" + r + "_c" + other;
+		rad = "#" + ques + "_r" + r + "_" + other;
+		elOther = $(chb).add(rad);
+		if (elOther.prop("checked")){
+			if (c == other){
+				$("#" + nameOther + "_div").show();
+				$("#" + nameOther + "_r" + r + "_c1").parents("tr:first").show();
+				if ($("#" + nameOther + "_r" + r + "_c1").val() == "none"){
+					$("#" + nameOther + "_r" + r + "_c1").val("");
+				}
+			}
+		}else{
+			$("#" + nameOther + "_r" + r + "_c1").parents("tr:first").hide();
+			$("#" + nameOther + "_r" + r + "_c1").val("none");
+		}
+		if ($("#" + nameOther + "_div").find("input[type='text'], textarea").not(":hidden").length == 0){
+			$("#" + nameOther + "_div").hide();
+		}
+	}
+}
