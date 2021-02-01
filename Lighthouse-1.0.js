@@ -303,15 +303,15 @@ function otherByColumnsInTable(opts){
 
 function otherByRowsInTable(opts){
 
-    checkArguments(arguments, opts);
-    var ques = opts.ques;
+	checkArguments(arguments, opts);
+	var ques = opts.ques;
     
 	if (opts.other === undefined || opts.other === ""){
 		throw "Номер столбца-уточнения не задан или является пустой строкой!"
 	}
 	switch (Object.prototype.toString.call(opts.other)){
 		case "[object Number]":
-            var other = opts.other.toString();
+        	var other = opts.other.toString();
 			break;
 		case "[object String]":
 		default:
@@ -331,14 +331,14 @@ function otherByRowsInTable(opts){
 
 	$("#" + ques + "_div").find("input[type='checkbox'], input[type='radio']").each(function(i, answ) {
 		showOrHideOther(answ);
-    });
+	});
     
 	$(document).on('lighthouseCheckboxChanged lighthouseRadioButtonChanged', function(event, graphicalObj, inputObj, bln) {
-        var reg = new RegExp(ques + "_.+");
-        if (reg.test(inputObj.id)){
-            showOrHideOther(inputObj);
-        }
-    });
+		var reg = new RegExp(ques + "_.+");
+		if (reg.test(inputObj.id)){
+			showOrHideOther(inputObj);
+		}
+	});
 
 	function showOrHideOther(answ){
 		var id, r, c, rad, chb, elOther;
