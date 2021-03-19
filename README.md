@@ -1,9 +1,10 @@
-# Библиотека js-функций и вопросов для Lighthouse Studio
+# Библиотека js-функций и вопросов для SSI v8
 
-Для работы необходимо подключить библиотеку `BetterLighthouseLibrary`
+# Подключение 
+`<script src="https://marsurvey.ru/public_scripts/custom_scripts_ssi8-1.0.js"></script>`
 
 # Содержание
-[Функции в Lighthouse.js](#Lighthouse_js)  
+[Функции в custom_scripts_ssi8.js](#custom_scripts_ssi8_js)  
 * [changeInputTextOrExclusive](#changeInputTextOrExclusive)
 * [checkInputTextOrExclusive](#checkInputTextOrExclusive)
 * [otherByColumnsInTable](#otherByColumnsInTable)  
@@ -12,7 +13,7 @@
 [Шаблоны вопросов Libraries_ques](#Libraries_ques) 
 * [City](#City)
 
-## Функции в Lighthouse.js (последняя версия Lighthouse-1.0.js)<a name="Lighthouse_js"></a>
+## Функции в custom_scripts_ssi8.js (последняя версия custom_scripts_ssi8-1.0.js)<a name="custom_scripts_ssi8_js"></a>
 
 ### changeInputTextOrExclusive(opts)<a name="changeInputTextOrExclusive"></a>
 
