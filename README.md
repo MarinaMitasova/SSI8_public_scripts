@@ -10,7 +10,7 @@
 * [otherByColumnsInTable](#otherByColumnsInTable)  
 * [otherByRowsInTable](#otherByRowsInTable) 
 
-[Шаблоны вопросов Libraries_ques](#Libraries_ques) 
+[Шаблоны вопросов Libraries_ques (НЕ ПРОВЕРЕНО!!!!)](#Libraries_ques) 
 * [City](#City)
 
 ## Функции в custom_scripts_ssi8.js (последняя версия custom_scripts_ssi8-1.0.js)<a name="custom_scripts_ssi8_js"></a>
