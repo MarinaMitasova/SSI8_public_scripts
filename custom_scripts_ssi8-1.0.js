@@ -31,7 +31,7 @@ function changeInputTextOrExclusive(opts){
 		throw "answLocation может принимать одно из значений: 'inRows' или 'inColumns'."
 	}
 	
-	var inputs = $("#"+ques+"_div").find("[type='text'], textarea").not("[id$='_other']");
+	var inputs = $("#"+ques+"_div").find("[type='text'], [type='tel'], textarea").not("[id$='_other']");
 	var excl = $("#"+ques+"_div").find("[type='checkbox']")
 	
 	var arr = {};
@@ -144,7 +144,7 @@ function checkInputTextOrExclusive(opts){
 		}
 	}
 	
-	var inputs = $("#"+ques+"_div").find("[type='text'], textarea").not("[id$='_other']");
+	var inputs = $("#"+ques+"_div").find("[type='text'], [type='tel'], textarea").not("[id$='_other']");
 	var excl = $("#"+ques+"_div").find("[type='checkbox']")
 	
 	var arr = {};
