@@ -156,7 +156,7 @@ function checkInputTextOrExclusive(opts){
 		})
 		$.each(temp, function(i, e){
 			var reg = new RegExp(ques + '_r' + e + '_c\\d+');
-			arr[e]={
+			arr[i+1]={
 				inps: inputs.filter(function(){return reg.test(this.id)}),
 				chb: excl.filter(function(){return reg.test(this.id)})
 			}
@@ -169,7 +169,7 @@ function checkInputTextOrExclusive(opts){
 		})
 		$.each(temp, function(i, e){
 			var reg = new RegExp(ques + '_r\\d+_c'+e);
-			arr[e]={
+			arr[i+1]={
 				inps: inputs.filter(function(){return reg.test(this.id)}),
 				chb: excl.filter(function(){return reg.test(this.id)})
 			}
