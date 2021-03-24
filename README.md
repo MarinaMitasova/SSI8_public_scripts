@@ -9,11 +9,10 @@
 * [checkInputTextOrExclusive](#checkInputTextOrExclusive)
 * [otherByColumnsInTable](#otherByColumnsInTable)  
 * [otherByRowsInTable](#otherByRowsInTable) 
-
-[Шаблоны вопросов Libraries_ques (НЕ ПРОВЕРЕНО!!!!)](#Libraries_ques) 
-* [City](#City)
+* [listFilter](#listFilter) 
 
 ## Функции в custom_scripts_ssi8.js (последняя версия custom_scripts_ssi8-1.0.js)<a name="custom_scripts_ssi8_js"></a>
+## Все примеры предполагают расположение скриптов в футере вопроса (если речь об изменении страницы после ее загрузки, а не о верификации)
 
 ### changeInputTextOrExclusive(opts)<a name="changeInputTextOrExclusive"></a>
 
@@ -32,17 +31,13 @@
 **Примеры:**
 ```html
 <script>
-$(function(){
-	changeInputTextOrExclusive({ques: "[%QUESTIONNAME()%]"});
-});
+changeInputTextOrExclusive({ques: "[%QUESTIONNAME()%]"});
 </script>
 ```
 
 ```html
 <script>
-$(function(){
-	changeInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLocation: "inRows"});
-});
+changeInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLocation: "inRows"});
 </script>
 ```
 
@@ -90,27 +85,23 @@ strErrorMessage = checkInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLoc
 **Примеры:**
 ```html
 <script>
-$(function(){
-	var q = {
-		ques: "[%QUESTIONNAME()%]",
-		other: 5
-	};
-	otherByColumnsInTable(q);
-})
+var q = {
+	ques: "[%QUESTIONNAME()%]",
+	other: 5
+};
+otherByColumnsInTable(q);
 </script>
 ```
 
 ```html
 <script>
-$(function(){
-	var q = {
-		ques: "[%QUESTIONNAME()%]",
-		other: 5,
-		nameOther: "[%QUESTIONNAME()%]Comm",
-		otherLocation: "inRows"
-	};
-	otherByColumnsInTable(q);
-})
+var q = {
+	ques: "[%QUESTIONNAME()%]",
+	other: 5,
+	nameOther: "[%QUESTIONNAME()%]Comm",
+	otherLocation: "inRows"
+};
+otherByColumnsInTable(q);
 </script>
 ```
 
@@ -132,32 +123,58 @@ $(function(){
 **Примеры:**
 ```html
 <script>
-$(function(){
-	var q = {
-		ques: "[%QUESTIONNAME()%]",
-		other: 5
-	};
-	otherByRowsInTable(q);
-})
+var q = {
+	ques: "[%QUESTIONNAME()%]",
+	other: 5
+};
+otherByRowsInTable(q);
 </script>
 ```
 
 ```html
 <script>
-$(function(){
-	var q = {
-		ques: "[%QUESTIONNAME()%]",
-		other: 5,
-		nameOther: "[%QUESTIONNAME()%]Comm"
-	};
-	otherByRowsInTable(q);
-})
+var q = {
+	ques: "[%QUESTIONNAME()%]",
+	other: 5,
+	nameOther: "[%QUESTIONNAME()%]Comm"
+};
+otherByRowsInTable(q);
 </script>
 ```
 
-## Шаблоны вопросов Libraries_ques<a name="Libraries_ques"></a>
+### listFilter(opts)<a name="listFilter"></a>
 
-### City<a name="City"></a>
+Фильтрация закрытого списка по совпадению с введенной подстрокой.
 
-Выпадающий список с фильтрацией при вводе текста.
-В строке ```	var other = [85];``` указать актуальные номера вариантов для уточнения.
+**Особенности работы функции:**
+
+* Аргументы задаются в виде объекта
+* Работает на вопросе типа Select Radio
+* Для корректного отображения таблицы с ответами и текстового поля необходимо подключить CSS-файл listFilter.css
+
+**Свойства объекта-аргумента**
+
+*ques* (обязательный) – имя вопроса  
+*alwaysShow* (default:=номер последней строки в вопросе) – номер/массив номеров строк, которые нужно показывать всегда (напр. вариант Другое или З/о). Если обязательных для показа вариантов ответа нет, установите параметр `alwaysShow: null`
+*maxRows* (default:=10) – высота блока с ответами в строках. Т.е., если в вопросе больше 10 вариантов ответа, будут показаны первые 10 подходящих под фильтр
+
+**Примеры:**
+```html
+<link rel="stylesheet" type="text/css" href="https://www.marsurvey.ru/public_scripts/listFilter.css">
+<script>
+listFilter({ques: "[%QUESTIONNAME()%]"});
+</script>
+```
+
+```html
+<link rel="stylesheet" type="text/css" href="https://www.marsurvey.ru/public_scripts/listFilter.css">
+<script>
+var q = {
+	ques: [%QUESTIONNAME()%].id,
+	maxRows: 15,
+	alwaysShow: [15, 27, 84]
+};
+
+listFilter(q);
+</script>
+```

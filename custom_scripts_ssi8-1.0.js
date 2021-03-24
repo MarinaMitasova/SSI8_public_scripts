@@ -396,3 +396,91 @@ function otherByRowsInTable(opts){
 		}
 	}
 }
+
+function listFilter(opts){
+	checkArguments(arguments, opts);
+	var ques = opts.ques + "_div";
+
+	if (!$("#" + ques).find("[type='radio']").length){
+		throw "Вопрос " + ques + " должен быть типа Select Radio."
+	}
+	if (opts.alwaysShow === undefined){
+		var alwaysShow = +$("#" + ques).find("[type='radio']:last").attr("id").split("_")[1];
+	}else{
+		alwaysShow = opts.alwaysShow;
+	}
+	if (alwaysShow === null) alwaysShow=0;
+	
+	if (Object.prototype.toString.call(alwaysShow) == "[object Number]"){
+		alwaysShow = [alwaysShow];
+	}
+	if (Object.prototype.toString.call(alwaysShow) != "[object Array]"){
+		throw "Свойство alwaysShow должно быть числом или массивом!"
+	}
+	
+	var maxRows = opts.maxRows === undefined ? 10 : opts.maxRows;
+	if (Object.prototype.toString.call(maxRows) != "[object Number]"){
+		throw "Свойство maxRows должно быть числом!"
+	}
+
+	$("#" + ques).find(".question_body").prepend("<div class='listFilter-bl-input'></div>");
+	$("#" + ques).find(".listFilter-bl-input").prepend("<input type='text' id='filter_input_" + ques + "'>");
+	var $inp = $("#filter_input_" + ques);
+	$("#" + ques).find(".inner_table>tbody>tr>td>table").addClass("listFilter-table");
+	
+	var $tbl = $("#" + ques).find(".listFilter-table");
+	
+	$("#" + ques).find("[id$=_other]").each(function(){
+		var dbl = $(this).clone();
+		var id = $(this).attr("id").replace("_other", "");
+		$("label[for='" + id + "']").append(dbl);
+		$(this).remove();
+	});
+	
+	
+	$(window).on("resize", function(){
+		$(".listFilter-bl-input").css("width", $(".clickable").outerWidth()+15+"px")
+	})
+	
+	$(window).on("load", function(){
+		$("body").css({"cursor": "default", "visibility": "visible"});
+		$tbl.css("max-height", $tbl.find("tr:first").height()*maxRows);
+
+		$(".header1, .header2, .inner_table, .question")
+			.css("visibility", "visible");
+		$(window).resize();
+	});
+	
+	$inp.on('keyup', function(){
+		var val = $(this).val();
+		
+		$("#" + ques + " label").each(function(){
+			var reg = new RegExp('\.*' + val + '.*', 'i');
+			var id = $(this).attr("for");
+			var r = +id.split("_")[1];
+			
+			if (reg.test($(this).text()) || $("#" + id).prop("checked") || alwaysShow.indexOf(r) != -1){
+				$(this).parents("tr:eq(0)").show()
+			}else{
+				$(this).parents("tr:eq(0)").hide()
+			}
+			
+			reg = new RegExp('\^' + val + '$', 'i');
+			if (reg.test($(this).text().trim())) {
+				SSI_SetSelect(id, true)
+			}
+		});
+	});
+	
+	SSI_CustomGraphicalRadiobox = function(GraphicalCheckboxObj, inputObj, bln){
+		var q = inputObj.id.split("_")[0]
+		if (q == ques.replace("_div", "")){
+			if($("#"+inputObj.id+"_other").length == 0){
+				$inp.val($("#" + ques + " label[for='" + inputObj.id + "']").text());
+			}
+		}
+	}
+	$("#" + ques + " [id$='_other']").on("keyup", function(){
+		$inp.val($(this).val())
+	});
+}
