@@ -5,8 +5,6 @@ body{
 
 .listFilter-bl-input{
 	white-space: nowrap;
-	/*width: 40%;*/
-	/* min-width: 350px; */
 }
 .listFilter-bl-input input[type=text]{
 	width: 100% !important;
@@ -18,10 +16,6 @@ body{
    	right: 1.5rem;
    	padding-left: .2rem;
    	font-size: .8rem;
-}
-.inner_table1{
-    width: 40%!important;
-    min-width: 350px!important;
 }
 .listFilter-table{
 	font-size: 1rem;

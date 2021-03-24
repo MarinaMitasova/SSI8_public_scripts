@@ -439,7 +439,7 @@ function listFilter(opts){
 	
 	
 	$(window).on("resize", function(){
-		$(".listFilter-bl-input").css("width", $(".clickable").outerWidth()+15+"px")
+		$(".listFilter-bl-input").css("width", $(".clickable:visible").outerWidth()+15+"px")
 	})
 	
 	$(window).on("load", function(){
