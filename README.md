@@ -170,7 +170,7 @@ listFilter({ques: "[%QUESTIONNAME()%]"});
 <link rel="stylesheet" type="text/css" href="https://www.marsurvey.ru/public_scripts/listFilter.css">
 <script>
 var q = {
-	ques: [%QUESTIONNAME()%].id,
+	ques: "[%QUESTIONNAME()%]",
 	maxRows: 15,
 	alwaysShow: [15, 27, 84]
 };
