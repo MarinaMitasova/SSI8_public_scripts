@@ -199,8 +199,8 @@ listFilter(q);
 **Примеры:**
 ```html
 <!--подключение скрипта Sortable и css-->
-<link rel="stylesheet" type="text/css" href="http://www.maronline.ru/public_scripts/createRank.css">
-<script src="http://www.maronline.ru/public_scripts/Sortable.js"></script>
+<link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/createRank.css">
+<script src="https://marsurvey.ru/public_scripts/Sortable.js"></script>
 <script>
 createRank("[%QUESTIONNAME()%]");
 </script>
