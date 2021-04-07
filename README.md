@@ -186,7 +186,6 @@ listFilter(q);
 
 **Особенности работы функции:**
 
-* Необходимо вызывать функцию при полной загрузке страницы (событие "load").
 * Работает на вопросах типа Ranking и типа Grid, где столбец имеет тип Ranking или строки типа numeric
 * Для вопроса типа Grid необходимо расположить метки строк справа от инпутов (Position Row labels on the Right)
 * Функция не содержит никаких проверок, поэтому, тип вопроса следует выбирать, основываясь на требуемый анкетой функционал (напр. необязательные варианты Другое)
@@ -203,8 +202,6 @@ listFilter(q);
 <link rel="stylesheet" type="text/css" href="http://www.maronline.ru/public_scripts/createRank.css">
 <script src="http://www.maronline.ru/public_scripts/Sortable.js"></script>
 <script>
-$(window).on("load", function() {
-	createRank("[%QUESTIONNAME()%]");
-});
+createRank("[%QUESTIONNAME()%]");
 </script>
 ```
