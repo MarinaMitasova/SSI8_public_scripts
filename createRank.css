@@ -1,0 +1,35 @@
+.inner_table{
+	width: 100%;
+	border-width: 0px !important;
+}
+.create_rank{
+    float: left;
+    width: 40%;
+    min-height: 250px;
+	border-radius: 5px;
+	background-color: #ffffff;
+	margin-left: 2%;
+	margin-right: 5%;
+	-webkit-box-shadow: 0px 5px 10px 5px rgba(69, 65, 78, 0.08);
+	-moz-box-shadow: 0px 5px 10px 5px rgba(69, 65, 78, 0.08);
+	box-shadow: 0px 5px 10px 5px rgba(69, 65, 78, 0.08);
+	border: 1px solid #eee;
+	padding: 10px;
+}
+
+.create_rank .options, .create_rank .grid_options {
+  background: #eee;
+  margin: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: grab;
+}
+
+.create_rank.right .options, .create_rank.right .grid_options {
+  background: #8bc670;
+  color: #fff;
+}
+
+.create_rank [type='text']{
+	width: 100%;
+}

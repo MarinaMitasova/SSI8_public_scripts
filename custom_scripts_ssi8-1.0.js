@@ -484,3 +484,104 @@ function listFilter(opts){
 		$inp.val($(this).val())
 	});
 }
+
+function createRank(ques){
+	
+	if ($("#"+ques+"_div").length == 0){
+		throw "Вопрос " + opts.ques + " не найден на странице."
+	}
+	
+	$("#"+ques + "_div .inner_table").removeAttr("border")
+	$("#"+ques + "_div .inner_table").prepend("<div class='create_rank_main'></div>")
+	$("#"+ques + "_div .create_rank_main").append("<div id='"+ques+"_rankList_left' class='create_rank left'></div>");
+	var blLeft = $("#" + ques + "_rankList_left");
+	$("#"+ques + "_div .create_rank_main").append("<div id='"+ques+"_rankList_right' class='create_rank right'></div>");
+	var blRight = $("#" + ques + "_rankList_right");
+	
+	if ('onpageshow' in window) {
+		window.addEventListener('pageshow', on_load, false);
+	} else {
+		window.addEventListener('load', on_load, false);
+	}
+	$("#"+ques + "_div .inner_table .column_header_row").hide()
+	
+	function on_load(){
+		$("#"+ques+"_div").find(".options, .row_label_cell .grid_options").sort(function(a, b){
+			var inp1 = $(a).parents("tr:first").find("[type='tel']"),
+				inp2 = $(b).parents("tr:first").find("[type='tel']");
+			if (+inp1.val() > +inp2.val()) return 1; // если первое значение больше второго
+			if (+inp1.val() == +inp2.val()) return 0; // если равны
+			if (+inp1.val() < +inp2.val()) return -1; // если первое значение меньше второго
+		}).each(function(){
+			var row = $(this).clone();
+			var inp = $(this).parents("tr:first").find("[type='tel']");
+			var id = inp.attr("id");
+			
+			if (inp.val() != ""){
+				blRight.append(row);
+			}else{
+				blLeft.append(row);
+			}
+			
+			row.attr("data-id", id);
+			
+			var oth = row.find("[id$='_other']");
+			if (oth.length){
+				var id = oth.attr("id");
+				oth.attr("data-id", id).removeAttr("id").removeAttr("name");
+				row.find("[type='hidden']").remove();
+				
+				oth.keyup(function(){
+					var id = $(this).data("id");
+					$("#"+id).val($(this).val())
+				})
+			}
+			
+			$(this).parents("tr:first").hide()
+		})
+	}
+	
+	
+	var options = {
+		group: 'shared',
+		animation: 250,
+		onEnd: function () {
+			$("#"+ques+"_div [type='tel']").filter("[id]").not("[id$='_other']").val("");
+			blRight.find(".options, .grid_options").each(function(i, e){
+				var id = $(this).data("id");
+				$("#"+ques+"_div").find("[id='"+id+"']").val(++i);
+				
+				if ($(this).find(".num").length) {
+					$(this).find(".num").text("("+i+")")
+				}else{
+					$(this).prepend("<span class='num'>("+i+")</span>");
+				}
+				
+				var oth = $(this).find("[data-id$='_other']");
+				if (oth.length){
+					id = oth.data("id");
+					$("#"+ques+"_div").find("[id='"+id+"']").val(oth.val());
+					if (oth.val() == ""){
+						alert("Впишите ответ в вариант Другое")
+						oth.focus()
+					}
+				}
+			})
+			blLeft.find(".options, .grid_options").each(function(i, e){
+				$(this).find(".num").remove()
+			})
+		}
+	};
+	
+	
+	Sortable.create(blLeft[0], options);
+	Sortable.create(blRight[0], options);
+	
+	var h = Math.max($("#"+ques+"_div .create_rank.left").height(), $("#"+ques+"_div .create_rank.right").height());
+	$("#"+ques+"_div .create_rank").css("min-height", (h+20)+"px");
+	$(window).resize(function(){
+		$("#"+ques+"_div .create_rank").removeAttr("style");
+		var h = Math.max($("#"+ques+"_div .create_rank.left").height(), $("#"+ques+"_div .create_rank.right").height());
+		$("#"+ques+"_div .create_rank").css("min-height", (h+20)+"px");
+	})
+}

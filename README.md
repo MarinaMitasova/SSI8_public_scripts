@@ -10,6 +10,7 @@
 * [otherByColumnsInTable](#otherByColumnsInTable)  
 * [otherByRowsInTable](#otherByRowsInTable) 
 * [listFilter](#listFilter) 
+* [createRank](#createRank) 
 
 ## Функции в custom_scripts_ssi8.js (последняя версия custom_scripts_ssi8-1.0.js)<a name="custom_scripts_ssi8_js"></a>
 ## Все примеры предполагают расположение скриптов в футере вопроса (если речь об изменении страницы после ее загрузки, а не о верификации)
@@ -176,5 +177,34 @@ var q = {
 };
 
 listFilter(q);
+</script>
+```
+
+### createRank(ques)<a name="createRank"></a>
+
+Создает вопрос типа Ranking в виде перетаскиваемых вариантов ответа.
+
+**Особенности работы функции:**
+
+* Необходимо вызывать функцию при полной загрузке страницы (событие "load").
+* Работает на вопросах типа Ranking и типа Grid, где столбец имеет тип Ranking или строки типа numeric
+* Для вопроса типа Grid необходимо расположить метки строк справа от инпутов (Position Row labels on the Right)
+* Функция не содержит никаких проверок, поэтому, тип вопроса следует выбирать, основываясь на требуемый анкетой функционал (напр. необязательные варианты Другое)
+* Следует вручную изменить текст ошибки на вкладке Error Mesage (Напр. "Перенесите в правое окошко [%ErrTotal()%] варианта(ов).")
+* Для работы скрипта необходимо подключить библиотеку Sortable.js и файл-CSS createRank.css
+
+**Свойства объекта-аргумента**
+
+*ques* (обязательный) – имя вопроса  
+
+**Примеры:**
+```html
+<!--подключение скрипта Sortable и css-->
+<link rel="stylesheet" type="text/css" href="http://www.maronline.ru/public_scripts/createRank.css">
+<script src="http://www.maronline.ru/public_scripts/Sortable.js"></script>
+<script>
+$(window).on("load", function() {
+	createRank("[%QUESTIONNAME()%]");
+});
 </script>
 ```
