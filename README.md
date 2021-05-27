@@ -11,6 +11,7 @@
 * [otherByRowsInTable](#otherByRowsInTable) 
 * [listFilter](#listFilter) 
 * [createRank](#createRank) 
+* [tdOnClick](#tdOnClick)
 
 ## Функции в custom_scripts_ssi8.js (последняя версия custom_scripts_ssi8-1.0.js)<a name="custom_scripts_ssi8_js"></a>
 ## Все примеры предполагают расположение скриптов в футере вопроса (если речь об изменении страницы после ее загрузки, а не о верификации)
@@ -204,4 +205,20 @@ listFilter(q);
 <script>
 createRank("[%QUESTIONNAME()%]");
 </script>
+```
+
+### tdOnClick()<a name="tdOnClick"></a>
+
+Подсвечивает ячейку таблицы при выборе ответа.
+
+**Особенности работы функции:**
+
+* Работает на вопросах типа Grid с ответами типа checkBox, radio
+* Работает для всех вопросов типа .grid на странице. Если для какого-то вопроса нужно отключить эту функцию, необходимо на блок вопроса (id = "[%QUESTIONNAME()%]_div") повесить класс "tdOnClick_off".
+* За цвет заливки ячеек отвечает класс tdOnClick_selected
+* Рекомендуется подключить функцию глобально (вкладка Headers and footers в настройках анкеты)
+
+**Примеры:**
+```js
+tdOnClick()
 ```
