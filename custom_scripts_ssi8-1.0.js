@@ -587,7 +587,7 @@ function createRank(ques){
 }
 
 function tdOnClick() {
-	var grid = $(".grid").filter(function(){return $(this).is(".tdOnClick_off").length ==0});
+	var grid = $(".grid").filter(function(){return $(this).is(".tdOnClick_off") ==false});
 	if (grid.length){
 		var radio = grid.find("[type='radio']");
 		if (radio.length){
