@@ -24,6 +24,7 @@
 
 * Аргументы задаются в виде объекта
 * В качестве числовых/текстовых ответов могут выступать поля numeric или open-end (включая многострочные textarea)
+* __Не работает для нескольких таких вопросов на странице__
 
 **Свойства объекта-аргумента**
 
@@ -33,13 +34,17 @@
 **Примеры:**
 ```html
 <script>
-changeInputTextOrExclusive({ques: "[%QUESTIONNAME()%]"});
+$(function(){
+	changeInputTextOrExclusive({ques: "[%QUESTIONNAME()%]"});
+})
 </script>
 ```
 
 ```html
 <script>
-changeInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLocation: "inRows"});
+$(function(){
+	changeInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLocation: "inRows"});
+})
 </script>
 ```
 
