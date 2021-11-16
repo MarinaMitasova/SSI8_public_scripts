@@ -14,7 +14,6 @@
 * [tdOnClick](#tdOnClick)
 
 ## Функции в custom_scripts_ssi8.js (последняя версия custom_scripts_ssi8-1.0.js)<a name="custom_scripts_ssi8_js"></a>
-## Все примеры предполагают расположение скриптов в футере вопроса (если речь об изменении страницы после ее загрузки, а не о верификации)
 
 ### changeInputTextOrExclusive(opts)<a name="changeInputTextOrExclusive"></a>
 
