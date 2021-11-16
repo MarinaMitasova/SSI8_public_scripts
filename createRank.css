@@ -2,8 +2,12 @@
 	width: 100%;
 	border-width: 0px !important;
 }
+
+.create_rank_main {
+	display: flex;
+}
+
 .create_rank{
-    float: left;
     width: 40%;
     min-height: 250px;
 	border-radius: 5px;
