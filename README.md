@@ -92,23 +92,27 @@ strErrorMessage = checkInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLoc
 **Примеры:**
 ```html
 <script>
-var q = {
-	ques: "[%QUESTIONNAME()%]",
-	other: 5
-};
-otherByColumnsInTable(q);
+$(function(){
+	var q = {
+		ques: "[%QUESTIONNAME()%]",
+		other: 5
+	};
+	otherByColumnsInTable(q);
+})
 </script>
 ```
 
 ```html
 <script>
-var q = {
-	ques: "[%QUESTIONNAME()%]",
-	other: 5,
-	nameOther: "[%QUESTIONNAME()%]Comm",
-	otherLocation: "inRows"
-};
-otherByColumnsInTable(q);
+$(function(){
+	var q = {
+		ques: "[%QUESTIONNAME()%]",
+		other: 5,
+		nameOther: "[%QUESTIONNAME()%]Comm",
+		otherLocation: "inRows"
+	};
+	otherByColumnsInTable(q);
+})
 </script>
 ```
 
@@ -130,22 +134,26 @@ otherByColumnsInTable(q);
 **Примеры:**
 ```html
 <script>
-var q = {
-	ques: "[%QUESTIONNAME()%]",
-	other: 5
-};
-otherByRowsInTable(q);
+$(function(){
+	var q = {
+		ques: "[%QUESTIONNAME()%]",
+		other: 5
+	};
+	otherByRowsInTable(q);
+})
 </script>
 ```
 
 ```html
 <script>
-var q = {
-	ques: "[%QUESTIONNAME()%]",
-	other: 5,
-	nameOther: "[%QUESTIONNAME()%]Comm"
-};
-otherByRowsInTable(q);
+$(function(){
+	var q = {
+		ques: "[%QUESTIONNAME()%]",
+		other: 5,
+		nameOther: "[%QUESTIONNAME()%]Comm"
+	};
+	otherByRowsInTable(q);
+})
 </script>
 ```
 
