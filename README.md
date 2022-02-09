@@ -12,6 +12,7 @@
 * [listFilter](#listFilter) 
 * [createRank](#createRank) 
 * [tdOnClick](#tdOnClick)
+* [changeConstantSumOrExclusive](#changeConstantSumOrExclusive)
 
 ## Функции в custom_scripts_ssi8.js (последняя версия custom_scripts_ssi8-1.0.js)<a name="custom_scripts_ssi8_js"></a>
 
@@ -233,4 +234,48 @@ createRank("[%QUESTIONNAME()%]");
 **Примеры:**
 ```js
 tdOnClick()
+```
+
+### changeConstantSumOrExclusive(opts)<a name="changeConstantSumOrExclusive"></a>
+
+Замена текстового поля "Затрудняюсь ответить" на чекбокс в вопросах типа Сonstant Sum (__Grid__, где строки/столбцы типа Сonstant Sum)
+
+**Особенности работы функции:**
+
+* Аргументы задаются в виде объекта
+* ___Не работает для нескольких таких вопросов на странице___
+
+**Свойства объекта-аргумента**
+
+*ques* (обязательный) – имя вопроса  
+*answLocation* (default:="inColumns") – расположение ответов в таблице. inRows – требуется дать ответ по строкам, inColumns – требуется дать ответ по столбцам
+*exclusive* (default:=номер последней строки/столбца таблицы) – номер строки/столбца для ответа "Затрудняюсь ответить"
+*inputs* (default:=номера с 1-го до exclusive-1) – номера строк/столбцов с инпутами
+*totalValue* (default:=100) – сумма всех ответов на вопрос (строку/столбец). totalValue может быть числом (в таком случае, сумма ответов по все строкам / столбцам должна быть равна этому числу) или массивом чисел, если строки/столбцы таблицы должны сводиться в разные значения.
+*exclusiveText* (default:="&nbsp;<i>Затрудняюсь ответить</i>") – подпись для чекбокса с З/о
+
+**Примеры:**
+```html
+<script>
+$(function(){
+	changeConstantSumOrExclusive({ques: "[%QUESTIONNAME()%]"});
+});
+</script>
+```
+
+```html
+<script>
+$(function(){
+	var q2 = {
+		ques: "[%QUESTIONNAME()%]",
+		answLocation: "inRows",
+		exclusive: 1,
+		inputs: [2, 3, 4],
+		totalValue: [25, 50, 112],
+		exclusiveText: "<b>Не наблюдаю таких пациентов</b>"
+	}	
+
+	changeConstantSumOrExclusive(q2);
+})
+</script>
 ```

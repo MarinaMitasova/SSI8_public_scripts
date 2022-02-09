@@ -619,3 +619,231 @@ function tdOnClick() {
 		}
 	}
 }
+
+function changeConstantSumOrExclusive (opts){
+	checkArguments(arguments, opts);
+	var ques = opts.ques;
+
+	var quesDirection = opts.answLocation === undefined ? "inColumns" : opts.answLocation;
+	if (quesDirection != "inRows" && quesDirection != "inColumns"){
+		throw "answLocation может принимать одно из значений: 'inRows' или 'inColumns'."
+	}
+	
+	var excl, inps, chb;
+	
+	if (opts.exclusive !== undefined){
+		excl = opts.exclusive;
+	}else{
+		var max = 0;
+		if (quesDirection == "inColumns"){
+			$("#" + ques + "_div [type='tel']").each(function(i, e){
+				var ind = +e.id.split("_")[1].replace("r", "");
+				if (ind > max) max = ind;
+			});
+		}else{
+			$("#" + ques + "_div [type='tel']").each(function(i, e){
+			  var ind = +e.id.split("_")[2].replace("c", "");
+			  if (ind > max) max = ind;
+			});
+		}
+		excl = max;
+	}
+	if (Object.prototype.toString.call(excl) != "[object Number]"){
+		throw "Свойство exclusive должно быть числом!";
+	}
+	
+	var inputs = opts.inputs === undefined ? [1, excl-1].fillRange() : opts.inputs;
+	
+	if (Object.prototype.toString.call(inputs) == "[object Number]"){
+		inputs = [inputs];
+	}
+	
+	var exclText = opts.exclusiveText === undefined ? "&nbsp;<i>Затрудняюсь ответить</i>" : opts.exclusiveText;
+	var total = opts.totalValue === undefined ? [100] : opts.totalValue;
+	
+	if (Object.prototype.toString.call(total) != "[object Number]" && Object.prototype.toString.call(total) != "[object Array]"){
+		throw "Свойство totalValue должно быть числом или массивом!";
+	}
+	
+	if (Object.prototype.toString.call(total) == "[object Number]"){
+		total = [total];
+	}
+			
+	if (quesDirection == "inRows"){
+
+		$("[type='tel'][id^='" + ques + "_r'][id$='_c" + excl + "']").each(function(){
+			$(this).parents("td:eq(1)").addClass("clickable")
+		})	
+		$("[type='tel'][id^='" + ques + "_r'][id$='_c" + excl + "']").each(function(){
+			$(this).before("<input type=checkbox id=" + this.id + "_excl" + " class='HideElement'/>" +
+				"<div id=" + this.id + "_excl_graphical" + " class='graphical_select checkbox'></div>");
+			
+			$(this).parent().next().find(".grid_cell_text").html(exclText)
+		})
+
+		$("[type='tel'][id^='" + ques + "_r'][id$='_c" + excl + "']").hide().attr("type", "hidden");
+		chb = $("#" + ques + "_div [type='checkbox'][id$='_c" + excl + "_excl']");
+		
+		if (total.length == 1){
+			chb.each(function(){
+				var r = +this.id.split("_")[1].replace("r", "");
+				total[r - 1] = total[0];
+			})
+		}
+		if (total.length < chb.length){
+			throw "Размерность массива totalValue должна совпадать с кол-ом строк в вопросе!";
+		}
+
+		inps = $();
+		$.each(inputs, function(i, e){
+			inps = inps.add("#" + ques + "_div [type='tel'][id$='_c" + e + "']");
+		});
+		
+		$(window).on("load", function(){
+			chb.each(function(){
+				var r = this.id.split("_")[1].replace("r", "");
+				if ($("#" + ques + "_r" + r + "_c" + excl).val() == total[r-1]) SSI_SetSelect(this.id, true);
+			})
+		})
+
+		SSI_CustomGraphicalCheckbox = function(GraphicalCheckboxObj, inputObj, bln){
+			if(bln){
+				var r = inputObj.id.split("_")[1].replace("r", "");
+				
+				inps.filter(function(i, e){
+					return e.id.split("_")[1].replace("r", "")	== r;
+				}).val("");
+				chb.filter(function(i, e){
+					return e.id.split("_")[1].replace("r", "")	== r;
+				}).not(inputObj).get().forEach(function(chb){
+					SSI_SetSelect(chb.id, 0)
+				})
+
+				$("#"+inputObj.id.replace("_excl", "")).val(total[r-1]);
+				$("#"+ques+"_r" + r + "_c_total").val("")
+			}else{
+				$("#"+inputObj.id.replace("_excl", "")).val("");
+			}
+		}
+
+		inps.on("keyup", function(){
+			if($(this).val() != ""){
+				var r = this.id.split("_")[1].replace("r", "");
+				chb.filter(function(i, e){
+					return e.id.split("_")[1].replace("r", "")	== r;
+				}).get().forEach(function(chb){
+					SSI_SetSelect(chb.id, 0)
+					$("#"+chb.id.replace("_excl", "")).val(0);
+				})
+			}
+		});
+	}else{
+		$("[type='tel'][id^='" + ques + "_r" + excl + "_c']").each(function(){
+			$(this).parents("td:eq(1)").addClass("clickable")
+		})	
+		$("[type='tel'][id^='" + ques + "_r" + excl + "_c']").each(function(){
+			$(this).before("<input type=checkbox id=" + this.id + "_excl" + " class='HideElement'/>" +
+				"<div id=" + this.id + "_excl_graphical" + " class='graphical_select checkbox'></div>");
+			
+			$(this).parent().next().find(".grid_cell_text").html(exclText)
+		})	
+		$("[type='tel'][id^='" + ques + "_r" + excl + "_c']").hide().attr("type", "hidden");
+		chb = $("[type='checkbox'][id^='" + ques + "_r" + excl + "_c']");
+
+		if (total.length == 1){
+			chb.each(function(){
+				var c = this.id.split("_")[2].replace("c", "");
+				total[c - 1] = total[0];
+			})
+		}
+		if (total.length < chb.length){
+			throw "Размерность массива totalValue должна совпадать с кол-ом столбцов в вопросе!";
+		}
+	
+		inps = $();
+		$.each(inputs, function(i, e){
+			inps = inps.add("[type='tel'][id^='" + ques + "_r" + e + "_c']");
+		});
+		if ($("[id^='" + ques + "_r'][id$='_other']").length>0){
+			if (total.length == 1) var other = $("[id^='" + ques + "_r'][id$='_other']");
+		}
+		
+		$(window).on("load", function(){
+			chb.each(function(){
+				var c = this.id.split("_")[2].replace("c", "");
+				if ($("#" + ques + "_r" + excl + "_c" + c).val() == total[c-1]) SSI_SetSelect(this.id, true);
+			})
+		})
+		
+		SSI_CustomGraphicalCheckbox = function(GraphicalCheckboxObj, inputObj, bln){
+			if(bln){
+				c = inputObj.id.split("_")[2].replace("c", "");
+				
+				inps.filter(function(i, e){
+					return e.id.split("_")[2].replace("c", "")	== c;
+				}).val("");
+				chb.filter(function(i, e){
+					return e.id.split("_")[2].replace("c", "")	== c;
+				}).not(inputObj).get().forEach(function(chb){
+					SSI_SetSelect(chb.id, 0)
+				})
+				
+				if(other) other.val("");
+				$("#"+inputObj.id.replace("_excl", "")).val(total[c-1]);
+				$("#"+ques+"_r_total_c"+c).val("")
+			}else{
+				$("#"+inputObj.id.replace("_excl", "")).val("");
+			}
+		}
+
+		inps.on("keyup", function(){
+			if($(this).val() != ""){
+				var c = this.id.split("_")[2].replace("c", "");
+				chb.filter(function(i, e){
+					return e.id.split("_")[2].replace("c", "")	== c;
+				}).get().forEach(function(chb){
+					SSI_SetSelect(chb.id, 0)
+					$("#"+chb.id.replace("_excl", "")).val(0);
+				})
+			}
+		});
+
+		if(other) {
+			other.on("keyup", function(){
+				if($(this).val() != ""){
+					chb.get().forEach(function(chb){
+						SSI_SetSelect(chb.id, 0)
+						$("#"+chb.id.replace("_excl", "")).val(0);
+					})
+				}
+			});
+		}
+	}
+}
+
+//Полифиллы, расширения
+Array.prototype.fillRange = function(){
+	try{
+		if (this.length < 2) {
+		  throw new TypeError('Array.fillRange: Длина массива не может быть меньше 2!');
+		}
+		var min = +this[0], max = +this[1];
+		var k=0, res=[];
+		for (var i = min; i <= max; i++){
+			res[k] = i;
+			k++
+		}
+		if (this.length > 2){
+			for (i = 2; i < this.length; i++){
+				res.push(+this[i]);
+			}
+		}
+		return res;
+	}catch(err){
+		if(window.console){
+			console.error(err.message)
+		}else{
+			alert(err.message);
+		}
+	}
+};
