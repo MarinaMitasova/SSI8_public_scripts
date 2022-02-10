@@ -290,12 +290,12 @@ $(function(){
 
 **Примеры:**
 ```js
-  var x = [1, 5].fillRange();		//результат: x = Array [ 1, 2, 3, 4, 5 ]
-  var x = [5, 15].fillRange();		//результат: x = Array [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-  var x = [0, 5, 99].fillRange();	//результат: x = Array [ 0, 1, 2, 3, 4, 5, 99 ]
-  var x = [2, 7, 1, 2, 9].fillRange();//результат: x = Array [ 2, 3, 4, 5, 6, 7, 1, 2, 9 ]
-  //Ошибки
-  var x = [2].fillRange();      	//Ошибка: Array.fillRange: Длина массива не может быть меньше 2!
-  var x = ["a", 2].fillRange(); 	//Ошибка: x = Array []
-  var x = [5, "a"].fillRange(); 	//Ошибка: x = Array []
+var x = [1, 5].fillRange();		//результат: x = Array [ 1, 2, 3, 4, 5 ]
+var x = [5, 15].fillRange();		//результат: x = Array [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+var x = [0, 5, 99].fillRange();	//результат: x = Array [ 0, 1, 2, 3, 4, 5, 99 ]
+var x = [2, 7, 1, 2, 9].fillRange();//результат: x = Array [ 2, 3, 4, 5, 6, 7, 1, 2, 9 ]
+//Ошибки
+var x = [2].fillRange();      	//Ошибка: Array.fillRange: Длина массива не может быть меньше 2!
+var x = ["a", 2].fillRange(); 	//Ошибка: x = Array []
+var x = [5, "a"].fillRange(); 	//Ошибка: x = Array []
   ```
