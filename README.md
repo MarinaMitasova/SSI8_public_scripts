@@ -13,6 +13,8 @@
 * [createRank](#createRank) 
 * [tdOnClick](#tdOnClick)
 * [changeConstantSumOrExclusive](#changeConstantSumOrExclusive)
+[Расширения в custom_scripts_ssi8.js](#custom_scripts_ssi8_Extensions) 
+* [fillRange](#fillRange)
 
 ## Функции в custom_scripts_ssi8.js (последняя версия custom_scripts_ssi8-1.0.js)<a name="custom_scripts_ssi8_js"></a>
 
@@ -279,3 +281,21 @@ $(function(){
 })
 </script>
 ```
+
+## Расширения в custom_scripts_ssi8.js<a name="custom_scripts_ssi8_Extensions"></a>
+
+### fillRange()<a name="fillRange"></a>
+Заполнение диапазона [n,m] числами от n до m включительно.  
+После границ диапазона можно указать дополнительные элементы. Они будут вставлены в конец массива.
+
+**Примеры:**
+```js
+  var x = [1, 5].fillRange();			//результат: x = Array [ 1, 2, 3, 4, 5 ]
+  var x = [5, 15].fillRange();			//результат: x = Array [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  var x = [0, 5, 99].fillRange();		//результат: x = Array [ 0, 1, 2, 3, 4, 5, 99 ]
+  var x = [2, 7, 1, 2, 9].fillRange();	//результат: x = Array [ 2, 3, 4, 5, 6, 7, 1, 2, 9 ]
+  //Ошибки
+  var x = [2].fillRange();      	//Ошибка: Array.fillRange: Длина массива не может быть меньше 2!
+  var x = ["a", 2].fillRange(); 	//Ошибка: x = Array []
+  var x = [5, "a"].fillRange(); 	//Ошибка: x = Array []
+  ```
