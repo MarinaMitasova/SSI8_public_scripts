@@ -290,7 +290,7 @@ $(function(){
 
 **Особенности работы функции:**
 
-* Работает на вопросах типа grid (chechBoxes, radio, numeric/text, combobox)
+* Работает на вопросах типа grid (checkbox, radio, numeric/text, combobox)
 
 **Аргументы**
 
