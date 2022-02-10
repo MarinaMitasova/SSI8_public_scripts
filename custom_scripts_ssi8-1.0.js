@@ -821,6 +821,39 @@ function changeConstantSumOrExclusive (opts){
 	}
 }
 
+function existAnswerForOtherSpecify(ques) {
+	if (ques === undefined){throw "Не задано имя вопроса `ques`!";}
+	if ($("#"+ques + "_div").length == 0){throw "Вопрос " + ques + " не найден на странице.";}
+	var other = $("input[id^='" + ques + "_'][id$='_other']");
+	if (!other.length){throw "Строк Другое не найдено на странице.";}
+
+	var err = "";
+	other.each(function(i, oth) {
+		if (oth.value !== ""){
+			var row = oth.id.match(/_r\d+_/g)[0].replace(/[r_]/g, "");
+			var selector1 = "input[id^='" + ques + "_r" + row + "']:not([id$=_other]:not([id$=_total])",
+				selector2 = "input[id^='" + ques + "_'][id$='_" + row + "']",
+				selector3 = "select[id^='" + ques + "_r" + row + "']";
+			var answ = $(selector1)
+			if (!answ.length) answ = answ.add(selector2)
+			answ = answ.add(selector3)
+		
+			var isAnswered = 0;
+			answ.each(function(i, item){
+				var isChecked = ($(item).attr('type') === "radio" || $(item).attr('type') === "checkbox") && item.checked,
+					isFilled = (($(item).attr('type') === "text" || $(item).attr('type') === "tel") && item.value !== ""),
+					isSelected = (item.tagName == "SELECT" && item.value !== "");
+				isAnswered += (isChecked || isFilled ||isSelected);
+			});
+			if (!isAnswered) {
+				err = "Укажите ответ для пункта Другое";
+				return false;
+			}
+		}
+	});
+	return err;
+}
+
 //Полифиллы, расширения
 Array.prototype.fillRange = function(){
 	try{

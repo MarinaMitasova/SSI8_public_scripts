@@ -13,6 +13,7 @@
 * [createRank](#createRank) 
 * [tdOnClick](#tdOnClick)
 * [changeConstantSumOrExclusive](#changeConstantSumOrExclusive)  
+* [existAnswerForOtherSpecify](#existAnswerForOtherSpecify)  
 
 [Расширения в custom_scripts_ssi8.js](#custom_scripts_ssi8_Extensions) 
 * [fillRange](#fillRange)
@@ -281,6 +282,25 @@ $(function(){
 	changeConstantSumOrExclusive(q2);
 })
 </script>
+```
+
+### existAnswerForOtherSpecify(ques)<a name="existAnswerForOtherSpecify"></a>
+
+Проверяет наличие ответа для строк с уточнениями.
+
+**Особенности работы функции:**
+
+* Работает на вопросах типа grid (chechBoxes, options, numeric/text, combobox)
+
+**Аргументы**
+
+*ques* (обязательный) – имя вопроса  
+
+**Примеры:**
+```js
+//вкладка Custom JavaScript Verification
+
+strErrorMessage = checkInputTextOrExclusive("[%QUESTIONNAME()%]");
 ```
 
 ## Расширения в custom_scripts_ssi8.js<a name="custom_scripts_ssi8_Extensions"></a>
