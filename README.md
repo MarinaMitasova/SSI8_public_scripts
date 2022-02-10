@@ -13,6 +13,7 @@
 * [createRank](#createRank) 
 * [tdOnClick](#tdOnClick)
 * [changeConstantSumOrExclusive](#changeConstantSumOrExclusive)  
+
 [Расширения в custom_scripts_ssi8.js](#custom_scripts_ssi8_Extensions) 
 * [fillRange](#fillRange)
 
