@@ -300,7 +300,7 @@ $(function(){
 ```js
 //вкладка Custom JavaScript Verification
 
-strErrorMessage = checkInputTextOrExclusive("[%QUESTIONNAME()%]");
+strErrorMessage = existAnswerForOtherSpecify("[%QUESTIONNAME()%]");
 ```
 
 ## Расширения в custom_scripts_ssi8.js<a name="custom_scripts_ssi8_Extensions"></a>
