@@ -14,7 +14,7 @@
 * [tdOnClick](#tdOnClick)
 * [changeConstantSumOrExclusive](#changeConstantSumOrExclusive)  
 * [existAnswerForOtherSpecify](#existAnswerForOtherSpecify)  
-* [`prescriptFunnel, prescriptFunnelNoPrescribing`](#`prescriptFunnel, prescriptFunnelNoPrescribing`)  
+* [prescriptFunnel, prescriptFunnelNoPrescribing](#prescriptFunnel)  
 
 [Расширения в custom_scripts_ssi8.js](#custom_scripts_ssi8_Extensions) 
 * [fillRange](#fillRange)
@@ -306,7 +306,7 @@ $(function(){
 strErrorMessage = existAnswerForOtherSpecify("[%QUESTIONNAME()%]");
 ```
 
-### prescriptFunnel(ques)<a name="prescriptFunnel, prescriptFunnelNoPrescribing"></a>
+### prescriptFunnel(ques)<a name="prescriptFunnel"></a>
 
 Для вопросов по воронке назначений. При выборе ответа в столбцах "Назначаю регулярно" / "Назначаю чаще всего", ставит автоматом ответ в "Есть опыт назначения" / "Назначаю регулярно".  
 Снимает ответы, "Назначаю регулярно" / "Назначаю чаще всего" при снятии галочки с "Есть опыт назначения" / "Назначаю регулярно".  
@@ -337,7 +337,8 @@ $(function(){
 ```
 ```js
 /*-------------------------------------
-Проверка НЕ нужна, если нет столбца "Нет опыта назначения" (нужно ставить обязательность ответа в каждом столбце)
+Проверка НЕ нужна, если нет столбца "Нет опыта назначения" 
+(нужно ставить обязательность ответа в каждом столбце)
 вкладка Custom JavaScript Verification
 -------------------------------------*/
 
