@@ -14,6 +14,7 @@
 * [tdOnClick](#tdOnClick)
 * [changeConstantSumOrExclusive](#changeConstantSumOrExclusive)  
 * [existAnswerForOtherSpecify](#existAnswerForOtherSpecify)  
+* [`prescriptFunnel, prescriptFunnelNoPrescribing`](#`prescriptFunnel, prescriptFunnelNoPrescribing`)  
 
 [Расширения в custom_scripts_ssi8.js](#custom_scripts_ssi8_Extensions) 
 * [fillRange](#fillRange)
@@ -28,7 +29,7 @@
 
 * Аргументы задаются в виде объекта
 * В качестве числовых/текстовых ответов могут выступать поля numeric или open-end (включая многострочные textarea)
-* ___Не работает для нескольких таких вопросов на странице___
+* ___Не работает, если на странице несколько обработчиков SSI_CustomGraphicalCheckbox (запускается последний)___
 
 **Свойства объекта-аргумента**
 
@@ -85,6 +86,7 @@ strErrorMessage = checkInputTextOrExclusive({ques: "[%QUESTIONNAME()%]", answLoc
 
 * Аргументы задаются в виде объекта
 * Работает на вопросах типа grid (checkbox, radio)
+* ___Не работает, если на странице несколько обработчиков SSI_CustomGraphicalCheckbox / SSI_CustomGraphicalRadiobox (запускаются последние)___
 
 **Свойства объекта-аргумента**
 
@@ -128,6 +130,7 @@ $(function(){
 
 * Аргументы задаются в виде объекта
 * Работает на вопросах типа grid (checkbox, radio)
+* ___Не работает, если на странице несколько обработчиков SSI_CustomGraphicalCheckbox / SSI_CustomGraphicalRadiobox (запускаются последние)___
 
 **Свойства объекта-аргумента**
 
@@ -247,7 +250,7 @@ tdOnClick()
 **Особенности работы функции:**
 
 * Аргументы задаются в виде объекта
-* ___Не работает для нескольких таких вопросов на странице___
+* ___Не работает, если на странице несколько обработчиков SSI_CustomGraphicalCheckbox (запускается последний)___
 
 **Свойства объекта-аргумента**
 
@@ -301,6 +304,44 @@ $(function(){
 //вкладка Custom JavaScript Verification
 
 strErrorMessage = existAnswerForOtherSpecify("[%QUESTIONNAME()%]");
+```
+
+### prescriptFunnel(ques)<a name="prescriptFunnel, prescriptFunnelNoPrescribing"></a>
+
+Для вопросов по воронке назначений. При выборе ответа в столбцах "Назначаю регулярно" / "Назначаю чаще всего", ставит автоматом ответ в "Есть опыт назначения" / "Назначаю регулярно".  
+Снимает ответы, "Назначаю регулярно" / "Назначаю чаще всего" при снятии галочки с "Есть опыт назначения" / "Назначаю регулярно".  
+
+**Особенности работы функции:**
+
+* Столбец "Нет опыта назначения" можно не добавлять, вызов функции от этого не зависит.
+
+**Аргументы**
+
+*ques* (обязательный) – имя вопроса  
+
+### prescriptFunnelNoPrescribing(ques)
+
+Для вопросов по воронке назначений __со столбцом "Нет опыта назначения"__. Проверка наличия ответа в строке/столбце.
+
+**Аргументы**
+
+*ques* (обязательный) – имя вопроса  
+
+**Примеры:**
+```html
+<script>
+$(function(){
+	prescriptFunnel("[%QUESTIONNAME()%]");
+})
+</script>
+```
+```js
+/*-------------------------------------
+Проверка НЕ нужна, если нет столбца "Нет опыта назначения" (нужно ставить обязательность ответа в каждом столбце)
+вкладка Custom JavaScript Verification
+-------------------------------------*/
+
+return prescriptFunnelNoPrescribing("[%QUESTIONNAME()%]");
 ```
 
 ## Расширения в custom_scripts_ssi8.js<a name="custom_scripts_ssi8_Extensions"></a>

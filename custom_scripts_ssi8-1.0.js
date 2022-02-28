@@ -65,19 +65,22 @@ function changeInputTextOrExclusive(opts){
 	var other = $("[id^='" + ques + "_r'][id$='_other']");
 	
 	SSI_CustomGraphicalCheckbox = function(GraphicalCheckboxObj, inputObj, bln){
-		if(bln){
-			if (quesDirection == "inRows"){
-				x = inputObj.id.split("_")[1].replace("r", "");
-			}else{
-				x = inputObj.id.split("_")[2].replace("c", "");
+		var q = inputObj.id.split("_")[0];
+    	if (q == ques) {
+			if(bln){
+				if (quesDirection == "inRows"){
+					x = inputObj.id.split("_")[1].replace("r", "");
+				}else{
+					x = inputObj.id.split("_")[2].replace("c", "");
+				}
+				
+				arr[x].inps.val("")
+				arr[x].chb.not(inputObj).get().forEach(function(chb){
+					SSI_SetSelect(chb.id, 0)
+				})
+				
+				if(quesDirection == "inColumns" && other.length) other.val("");
 			}
-			
-			arr[x].inps.val("")
-			arr[x].chb.not(inputObj).get().forEach(function(chb){
-				SSI_SetSelect(chb.id, 0)
-			})
-			
-			if(quesDirection == "inColumns" && other.length) other.val("");
 		}
 	}
 	
@@ -225,10 +228,12 @@ function otherByColumnsInTable(opts){
 		});
 
 		SSI_CustomGraphicalCheckbox = function(graphicalObj, inputObj, bln){
-				inputChanged(graphicalObj, inputObj, bln)
+				var q = inputObj.id.split("_")[0];
+				if (q == ques) {inputChanged(graphicalObj, inputObj, bln)}
 			};
 		SSI_CustomGraphicalRadiobox = function(graphicalObj, inputObj, bln){
-				inputChanged(graphicalObj, inputObj, bln)
+				var q = inputObj.id.split("_")[0];
+				if (q == ques) {inputChanged(graphicalObj, inputObj, bln)}
 			};
 		function inputChanged(graphicalObj, inputObj, bln) {
 			var reg = new RegExp(ques + "_.+");
@@ -280,10 +285,12 @@ function otherByColumnsInTable(opts){
 		});
 		
 		SSI_CustomGraphicalCheckbox = function(graphicalObj, inputObj, bln){
-				inputChanged(graphicalObj, inputObj, bln)
+				var q = inputObj.id.split("_")[0];
+				if (q == ques) {inputChanged(graphicalObj, inputObj, bln)}
 			};
 		SSI_CustomGraphicalRadiobox = function(graphicalObj, inputObj, bln){
-				inputChanged(graphicalObj, inputObj, bln)
+				var q = inputObj.id.split("_")[0];
+				if (q == ques) {inputChanged(graphicalObj, inputObj, bln)}
 			};
 		function inputChanged (graphicalObj, inputObj, bln) {
 			console.log(inputObj.id, bln)
@@ -359,10 +366,12 @@ function otherByRowsInTable(opts){
     });
     
 	SSI_CustomGraphicalCheckbox = function(graphicalObj, inputObj, bln){
-			inputChanged(graphicalObj, inputObj, bln)
+			var q = inputObj.id.split("_")[0];	
+			if (q == ques) {inputChanged(graphicalObj, inputObj, bln)}
 		};
 	SSI_CustomGraphicalRadiobox = function(graphicalObj, inputObj, bln){
-			inputChanged(graphicalObj, inputObj, bln)
+			var q = inputObj.id.split("_")[0];	
+			if (q == ques) {inputChanged(graphicalObj, inputObj, bln)}
 		};
 	function inputChanged (graphicalObj, inputObj, bln) {
         var reg = new RegExp(ques + "_.+");
@@ -707,22 +716,25 @@ function changeConstantSumOrExclusive (opts){
 		})
 
 		SSI_CustomGraphicalCheckbox = function(GraphicalCheckboxObj, inputObj, bln){
-			if(bln){
-				var r = inputObj.id.split("_")[1].replace("r", "");
-				
-				inps.filter(function(i, e){
-					return e.id.split("_")[1].replace("r", "")	== r;
-				}).val("");
-				chb.filter(function(i, e){
-					return e.id.split("_")[1].replace("r", "")	== r;
-				}).not(inputObj).get().forEach(function(chb){
-					SSI_SetSelect(chb.id, 0)
-				})
+			var q = inputObj.id.split("_")[0];
+    		if (q == ques) {
+				if(bln){
+					var r = inputObj.id.split("_")[1].replace("r", "");
+					
+					inps.filter(function(i, e){
+						return e.id.split("_")[1].replace("r", "")	== r;
+					}).val("");
+					chb.filter(function(i, e){
+						return e.id.split("_")[1].replace("r", "")	== r;
+					}).not(inputObj).get().forEach(function(chb){
+						SSI_SetSelect(chb.id, 0)
+					})
 
-				$("#"+inputObj.id.replace("_excl", "")).val(total[r-1]);
-				$("#"+ques+"_r" + r + "_c_total").val("")
-			}else{
-				$("#"+inputObj.id.replace("_excl", "")).val("");
+					$("#"+inputObj.id.replace("_excl", "")).val(total[r-1]);
+					$("#"+ques+"_r" + r + "_c_total").val("")
+				}else{
+					$("#"+inputObj.id.replace("_excl", "")).val("");
+				}
 			}
 		}
 
@@ -776,23 +788,26 @@ function changeConstantSumOrExclusive (opts){
 		})
 		
 		SSI_CustomGraphicalCheckbox = function(GraphicalCheckboxObj, inputObj, bln){
-			if(bln){
-				c = inputObj.id.split("_")[2].replace("c", "");
-				
-				inps.filter(function(i, e){
-					return e.id.split("_")[2].replace("c", "")	== c;
-				}).val("");
-				chb.filter(function(i, e){
-					return e.id.split("_")[2].replace("c", "")	== c;
-				}).not(inputObj).get().forEach(function(chb){
-					SSI_SetSelect(chb.id, 0)
-				})
-				
-				if(other) other.val("");
-				$("#"+inputObj.id.replace("_excl", "")).val(total[c-1]);
-				$("#"+ques+"_r_total_c"+c).val("")
-			}else{
-				$("#"+inputObj.id.replace("_excl", "")).val("");
+			var q = inputObj.id.split("_")[0];
+    		if (q == ques) {
+				if(bln){
+					c = inputObj.id.split("_")[2].replace("c", "");
+					
+					inps.filter(function(i, e){
+						return e.id.split("_")[2].replace("c", "")	== c;
+					}).val("");
+					chb.filter(function(i, e){
+						return e.id.split("_")[2].replace("c", "")	== c;
+					}).not(inputObj).get().forEach(function(chb){
+						SSI_SetSelect(chb.id, 0)
+					})
+					
+					if(other) other.val("");
+					$("#"+inputObj.id.replace("_excl", "")).val(total[c-1]);
+					$("#"+ques+"_r_total_c"+c).val("")
+				}else{
+					$("#"+inputObj.id.replace("_excl", "")).val("");
+				}
 			}
 		}
 
@@ -854,6 +869,98 @@ function existAnswerForOtherSpecify(ques) {
 	return err;
 }
 
+function prescriptFunnel(ques) {
+
+	if (ques === undefined){throw "Не задано имя вопроса `ques`!";}
+	if ($("#" + ques + "_div").length == 0){throw "Вопрос " + ques + " не найден на странице.";}
+  
+	SSI_CustomGraphicalCheckbox = function(graphicalObj, inputObj, bln){
+	  var q = inputObj.id.split("_")[0];
+  
+	  if (q == ques) {
+		var r = inputObj.id.split("_")[1].replace("r", "");
+		var id1 = ques + "_r" + r + "_c1";
+		var id2 = ques + "_r" + r + "_c2";
+		var id3 = ques + "_c3_" + r;
+		var id4 = ques + "_r" + r + "_c4";
+
+		if ( inputObj.id.split("_")[2] == "c1" ) {    
+		  if (bln){
+			if ( $("[id^='" + ques + "'][id$='_c4']" ).length) {  
+			  SSI_SetSelect(id4, false);
+			}
+		  } else {
+			SSI_SetSelect(id2, false);
+			SSI_SetSelect(id3, false);
+		  }
+		} else if ( inputObj.id.split("_")[2] == "c2" ) {
+		  if (bln){
+			SSI_SetSelect(id1, true);
+  
+			if ( $("[id^='" + ques + "'][id$='_c4']" ).length) {  
+			  SSI_SetSelect(id4, false);
+			}
+		  } else {
+			SSI_SetSelect(id3, false);
+		  }
+		} else if ( inputObj.id.split("_")[2] == "c4" ) {
+		  if (bln){
+			SSI_SetSelect(id1, false);
+			SSI_SetSelect(id2, false);
+			SSI_SetSelect(id3, false);
+		  }
+		}
+	  }
+	}
+  
+	SSI_CustomGraphicalRadiobox = function(graphicalObj, inputObj){
+	  var q = inputObj.id.split("_")[0];
+  
+	  if (q == ques) {
+		var r = inputObj.id.split("_")[2];
+		var id1 = ques + "_r" + r + "_c1";
+		var id2 = ques + "_r" + r + "_c2";
+		var id4 = ques + "_r" + r + "_c4";
+		if ( inputObj.id.split("_")[1] == "c3") {
+		  SSI_SetSelect(id1, true);
+		  SSI_SetSelect(id2, true);
+  
+		  if ( $("[id^='" + ques + "'][id$='_c4']" ).length) {  
+			SSI_SetSelect(id4, false);
+		  }
+		}
+	  }
+	}
+  }
+
+  function prescriptFunnelNoPrescribing(ques) {
+	if (ques === undefined){throw "Не задано имя вопроса `ques`!";}
+	if ($("#"+ques + "_div").length == 0){throw "Вопрос " + ques + " не найден на странице.";}
+  
+	var err = "";
+  
+	if ( $("[id^='" + ques + "'][id$='_c4']" ).length) {  
+	  var rowCount = $("[id^='" + ques + "_r'][id$=_c1]").length;
+	  var rows = $("[id^='" + ques + "_r'][id$='_row']");
+	  
+	  var lastNumberRow = 0;
+	  for (var i = 0; i < rowCount; i++) {
+		var numberRow = $(rows[i]).prop('id').split("_")[1].split("").slice(1).join("");
+		 if ( +numberRow > lastNumberRow ) lastNumberRow = numberRow;
+	  }
+	  for (var i = 1; i <= lastNumberRow; i++) {
+		if ( $("[id^='" + ques + "_r" + i + "_row']").length && $("[id^='" + ques + "_r" + i + "_c']:checked").length < 1 ) {
+		  err = "Пожалуйста, укажите ответ в каждой строке";
+		  return err;
+		}
+	  }
+	  if ( $("[id^='" + ques + "_r'][id$='_c4']:checked").length < rowCount && $("[id^='" + ques + "_c3_']:checked").length < 1 ) {
+		err = "Пожалуйста, укажите ответ в 3-м столбце";
+		return err;
+	  }
+	}
+	return err;
+  }
 //Полифиллы, расширения
 Array.prototype.fillRange = function(){
 	try{
