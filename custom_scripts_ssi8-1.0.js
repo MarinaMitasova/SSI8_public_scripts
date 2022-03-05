@@ -690,7 +690,8 @@ function changeConstantSumOrExclusive (opts){
 			$(this).parent().next().find(".grid_cell_text").html(exclText)
 		})
 
-		$("[type='tel'][id^='" + ques + "_r'][id$='_c" + excl + "']").hide().attr("type", "hidden");
+		$("[type='tel'][id^='" + ques + "_r'][id$='_c" + excl + "']").hide()
+		$("[type='tel'][id^='" + ques + "_r'][id$='_c" + excl + "']")[0].setAttribute("type", "hidden");
 		chb = $("#" + ques + "_div [type='checkbox'][id$='_c" + excl + "_excl']");
 		
 		if (total.length == 1){
@@ -759,7 +760,8 @@ function changeConstantSumOrExclusive (opts){
 			
 			$(this).parent().next().find(".grid_cell_text").html(exclText)
 		})	
-		$("[type='tel'][id^='" + ques + "_r" + excl + "_c']").hide().attr("type", "hidden");
+		$("[type='tel'][id^='" + ques + "_r" + excl + "_c']").hide()
+		$("[type='tel'][id^='" + ques + "_r" + excl + "_c']")[0].setAttribute("type", "hidden");
 		chb = $("[type='checkbox'][id^='" + ques + "_r" + excl + "_c']");
 
 		if (total.length == 1){
