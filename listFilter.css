@@ -36,3 +36,18 @@ body{
 .listFilter-table label{
 	white-space: nowrap;
 }
+
+@media only screen and (max-device-width: 560px){
+	.listFilter-table {
+	    width: 90% !important;
+	}
+	.inner_table:not(.modified) table {
+	    width: 90%!important;
+	}
+	.listFilter-bl-input input[type=text]{
+		width: 88% !important;
+	}
+	.listFilter-table [id$=_other]{
+		display: block;
+	}
+}
