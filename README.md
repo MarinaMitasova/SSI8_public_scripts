@@ -15,6 +15,7 @@
 * [changeConstantSumOrExclusive](#changeConstantSumOrExclusive)  
 * [existAnswerForOtherSpecify](#existAnswerForOtherSpecify)  
 * [prescriptFunnel, prescriptFunnelNoPrescribing](#prescriptFunnel)  
+* [starRating](#starRating)  
 
 [Расширения в custom_scripts_ssi8.js](#custom_scripts_ssi8_Extensions) 
 * [fillRange](#fillRange)
@@ -343,6 +344,28 @@ $(function(){
 -------------------------------------*/
 
 return prescriptFunnelNoPrescribing("[%QUESTIONNAME()%]");
+```
+
+### starRating(ques)<a name="starRating"></a>
+
+Вопрос-оценка (шкала) в виде звездного рейтинга
+
+**Особенности работы функции:**
+
+* Работает на вопросах типа **Select Radio**
+* Количество колонок (Number of Columns) установить равным количеству оценок (5 для 5-балльной шкалы, 7 для 7-былльной и т.д.)  
+* необходимо подключить CSS-файл starRating.css
+
+**Аргументы**
+
+*ques* (обязательный) – имя вопроса  
+
+**Примеры:**
+```html
+<link rel="stylesheet" type="text/css" href="https://www.marsurvey.ru/public_scripts/starRating.css">
+<script>
+starRating("[%QUESTIONNAME()%]");
+</script>
 ```
 
 ## Расширения в custom_scripts_ssi8.js<a name="custom_scripts_ssi8_Extensions"></a>
