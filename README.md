@@ -354,7 +354,7 @@ return prescriptFunnelNoPrescribing("[%QUESTIONNAME()%]");
 
 * Работает на вопросах типа **Select Radio**
 * Количество колонок (Number of Columns) установить равным количеству оценок (5 для 5-балльной шкалы, 7 для 7-былльной и т.д.)  
-* необходимо подключить CSS-файл starRating.css
+* Необходимо подключить CSS-файл starRating.css
 
 **Аргументы**
 
