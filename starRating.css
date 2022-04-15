@@ -42,19 +42,57 @@ a.icon-hook {
   /* Save Demo 2 */
   .star-dashes-2 {
 	opacity: 0;
+	-ms-transform-origin: center;
+	-o-transform-origin: center;
+	-moz-transform-origin: center;
 	-webkit-transform-origin: center;
+	transform-origin: center;
+
+	-ms-transform: scale(.5);
+	-o-transform: scale(.5);
+	-moz-transform: scale(.5);
 	-webkit-transform: scale(.5);
+	transform: scale(.5);
   }
   
   .active .star-dashes-2 {
+	-ms-animation: dashes-2 2s forwards;
+	-o-animation: dashes-2 2s forwards;
+	-moz-animation: dashes-2 2s forwards;
 	-webkit-animation: dashes-2 2s forwards;
+	animation: dashes-2 2s forwards;
   }
   
   .active .main-star-2 {
 	fill: url(#grad);
+	-ms-transform: rotate(360deg);
+	-o-transform: rotate(360deg);
+	-moz-transform: rotate(360deg);
 	-webkit-transform: rotate(360deg);
+	transform: rotate(360deg);
   }
   
+  @-ms-keyframes dashes-2 {
+	50% {
+	  opacity: 1;
+	  stroke: #f9f706;
+	  -ms-transform: rotate(360deg);
+	}
+  }
+  @-o-keyframes dashes-2 {
+	50% {
+	  opacity: 1;
+	  stroke: #f9f706;
+	  -o-transform: rotate(360deg);
+	}
+  }
+  @-moz-keyframes dashes-2 {
+	50% {
+	  opacity: 1;
+	  stroke: #f9f706;
+	  -moz-transform: rotate(360deg);
+	}
+  }
   @-webkit-keyframes dashes-2 {
 	50% {
 	  opacity: 1;
@@ -62,6 +100,14 @@ a.icon-hook {
 	  -webkit-transform: rotate(360deg);
 	}
   }
+  @keyframes dashes-2 {
+	50% {
+	  opacity: 1;
+	  stroke: #f9f706;
+	  transform: rotate(360deg);
+	}
+  }
+  
   
   .starRating tr .clickable{
 	  background: transparent;
