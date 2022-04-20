@@ -988,6 +988,14 @@ function starRating(ques){
 			return tmp[tmp.length-1] <= i;
 		}).addClass("active")
 	})
+
+	$(window).on("load", function(){
+		var val_old = $("#"+ques+"_div [type=radio]:checked");
+		if (val_old.length){
+			$("#star"+val_old.attr("id")).click()
+		}
+	})
+	
 }
 
 //Полифиллы, расширения
