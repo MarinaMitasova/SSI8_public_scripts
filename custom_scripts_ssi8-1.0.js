@@ -974,7 +974,7 @@ function starRating(ques){
 	
 	$("#"+ques+"_div .inner_table td:not(.select_column_spacing, .input_cell, .option_cell)").css("width", 100/$("#"+ques+"_div label").length + "%")
 	
-	icons = $("#"+ques+"_div .icon-hook");
+	var icons = $("#"+ques+"_div .icon-hook");
 	
 	icons.click(function(event){
 		event.preventDefault();
