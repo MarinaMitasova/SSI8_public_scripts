@@ -998,6 +998,129 @@ function starRating(ques){
 	
 }
 
+function checkAnswerInTable (opts){
+	checkArguments(arguments, opts);
+
+	var head = document.querySelector('head');
+	var style = document.createElement("style");
+	style.appendChild(document.createTextNode(".checkAnswerInTable_err{border: 1px solid red !important;}"));
+	head.appendChild(style);
+
+	var ques = opts.ques;
+  
+	var quesDirection = opts.answLocation === undefined ? "inColumns" : opts.answLocation;
+	if (quesDirection != "inRows" && quesDirection != "inColumns" && quesDirection != "inTable"){
+	  throw "answLocation может принимать одно из значений: 'inRows', 'inColumns' или 'inTable'."
+	}
+  
+	var err = "";
+  
+	var rows = $("[id^='" + ques + "_r'][id$='_row']");
+	var rowCount = $(rows).length;
+	rows.removeClass("checkAnswerInTable_err")
+  
+	// проверка на случай, если Question Direction - Columns и есть строка Totals
+	$(rows).each(function() {
+	  if( !( $(this).find("[id*='" + ques + "_r'][id*='_c'][type='tel']").length ) ) {
+		  rowCount--;
+	  }
+	});
+  
+	var columns = $(rows[0]).find("[id*='" + ques + "_r'][id*='_c'][type='tel']");
+	var columnCount = $(columns).length;
+	$("#" + ques + "_div td").removeClass("checkAnswerInTable_err")
+	
+	var lastNumberRow = 0;
+	// lastNumberRow - это номер последнего элемента в списке (необходим в случае, если это Constructed List, и в нём присутствуют не все элементы родительского листа)
+	for (var i = 0; i < rowCount; i++) {
+	  var numberRow = $(rows[i]).prop("id").split("_")[1].split("").slice(1).join("");
+	   if ( +numberRow > lastNumberRow ) lastNumberRow = numberRow;
+	}
+  
+	var lastNumberColumn = 0;
+	// lastNumberColumn - это номер последнего элемента в списке (необходим в случае, если это Constructed List, и в нём присутствуют не все элементы родительского листа)
+	for (var i = 0; i < columnCount; i++) {
+	  var numberColumn = $(columns[i]).prop("id").split("_")[2].split("").slice(1).join("");
+	   if ( +numberColumn > lastNumberColumn ) lastNumberColumn = numberColumn;
+	}
+  
+	// Ищем строки, где нужно вписать "Другое"
+	var otherRows = $(rows).find("[id*='other']");
+  
+	// Ищем столбцы, где нужно вписать "Другое"
+	var otherColumns = $("[id^='" + ques + "_c'][id$='_other']");
+  
+	if (quesDirection == "inRows"){
+	  var checkRows = 0;    
+  
+	  for (var i = 1; i <= lastNumberRow; i++) {
+		var countCheckInRow = 0;     
+  
+		for (var j = 1; j <= lastNumberColumn; j++) {
+		  if ( $("#" + ques + "_r" + i + "_c" + j + "").length && $("#" + ques + "_r" + i + "_c" + j + "").val() != '' ) {
+			countCheckInRow++;
+		  }
+		  if ( $(otherRows).length && $("#" + ques + "_r" + i + "_other").val() == '' ) {
+			countCheckInRow++;
+		  }
+		}
+		if (countCheckInRow > 0) {
+			checkRows++;
+		}else{
+			$("#" + ques + "_r" + i + "_row").addClass("checkAnswerInTable_err");
+		}
+	  }
+	  if ( checkRows < rowCount ) {
+		err = "В строке должна быть заполнена хотя бы одна ячейка";
+		return err;
+	  }
+	}
+  
+	if (quesDirection == "inColumns"){
+	  var checkColumns = 0;
+  
+	  for (var i = 1; i <= lastNumberColumn; i++) {
+		var countCheckInColumns = 0;
+  
+		for (var j = 1; j <= lastNumberRow; j++) {
+		  if ( $("#" + ques + "_r" + j + "_c" + i + "").length && $("#" + ques + "_r" + j + "_c" + i + "").val() != '' ) {
+			countCheckInColumns++;
+		  }
+		  if ( $(otherColumns).length && $("#" + ques + "_c" + i + "_other").val() == '' ) {
+			countCheckInColumns++;
+		  }
+		}
+		if (countCheckInColumns > 0) {
+			checkColumns++;
+		}else{
+			$("#" + ques + "_div .grid_c" + i).filter(function(){return $(this).find("[type=tel]").length>0}).addClass("checkAnswerInTable_err");
+		}
+	  }
+	  if ( checkColumns < columnCount ) {
+		err = "В столбце должна быть заполнена хотя бы одна ячейка";
+		return err;
+	  }
+	}
+  
+	if (quesDirection == "inTable"){
+	  var checkCells = 0;
+  
+	  for (var i = 1; i <= lastNumberRow; i++) {
+  
+		for (var j = 1; j <= lastNumberColumn; j++) {
+		  if ( $("#" + ques + "_r" + i + "_c" + j + "").length && $("#" + ques + "_r" + i + "_c" + j + "").val() != '' ) {
+			checkCells++;
+		  }
+		}
+	  }
+	  if ( checkCells < 1 ) {
+		err = "В таблице должна быть заполнена хотя бы одна ячейка";
+		return err;
+	  }
+	}
+	return err;
+}
+
 //Полифиллы, расширения
 Array.prototype.fillRange = function(){
 	try{

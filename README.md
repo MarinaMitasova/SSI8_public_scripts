@@ -16,6 +16,7 @@
 * [existAnswerForOtherSpecify](#existAnswerForOtherSpecify)  
 * [prescriptFunnel, prescriptFunnelNoPrescribing](#prescriptFunnel)  
 * [starRating](#starRating)  
+* [checkAnswerInTable](#checkAnswerInTable)  
 
 [Расширения в custom_scripts_ssi8.js](#custom_scripts_ssi8_Extensions) 
 * [fillRange](#fillRange)
@@ -366,6 +367,28 @@ return prescriptFunnelNoPrescribing("[%QUESTIONNAME()%]");
 <script>
 starRating("[%QUESTIONNAME()%]");
 </script>
+```
+
+### checkAnswerInTable(opts)<a name="checkAnswerInTable"></a>
+
+Проверка наличия ответа в таблице/строке/столбце для вопросов типа grid-numeric
+
+**Особенности работы функции:**
+
+* Аргументы задаются в виде объекта
+
+**Свойства объекта-аргумента**
+
+*ques* (обязательный) – имя вопроса  
+*answLocation* (default:="inColumns") – расположение ответов в таблице. inRows – требуется дать ответ по строкам, inColumns – требуется дать ответ по столбцам, inTable - требуется заполнить хотя бы одну ячейку таблицы.  
+
+**Примеры:**
+```js
+//вкладка Custom JavaScript Verification
+
+strErrorMessage = checkAnswerInTable({ques: "[%QUESTIONNAME()%]"});
+strErrorMessage = checkAnswerInTable({ques: "[%QUESTIONNAME()%]", answLocation: "inRows"});
+strErrorMessage = checkAnswerInTable({ques: "[%QUESTIONNAME()%]", answLocation: "inTable"});
 ```
 
 ## Расширения в custom_scripts_ssi8.js<a name="custom_scripts_ssi8_Extensions"></a>
