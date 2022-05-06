@@ -407,17 +407,28 @@ strErrorMessage = checkAnswerInTable({ques: "[%QUESTIONNAME()%]", answLocation: 
 **Свойства объекта-аргумента**
 
 *ques* (обязательный) – имя вопроса  
-*labelBefore* (default:=default:="<b><font color='#C80000'>1 балл</font></b>") – текст метки перед слайдером (подпись левого конца слайдера)  
-*labelAfter* (default:="<b><font color='#008000'>5 баллов</font></b>") – текст метки после слайдера (подпись правого конца слайдера)  
-*exclusive* (default:=undefined) - номер строки для ответа "Затрудняюсь ответить"
+*labelBefore* (default:="&lt;b&gt;&lt;font color='#C80000'&gt;1 балл&lt;/font&gt;&lt;/b&gt;") – текст метки перед слайдером (подпись левого конца слайдера)  
+*labelAfter* (default:="&lt;b&gt;&lt;font color='#008000'&gt;5 баллов&lt;/font&gt;&lt;/b&gt;") – текст метки после слайдера (подпись правого конца слайдера)  
+*exclusive* (default:=undefined) - номер строки для ответа "Затрудняюсь ответить"  
 *handleVisible* (default:=true) - видимость выбранного балла на ползунке (true - баллы отображаются, false - баллы НЕ отображаются)  
 *colorAnswered* (default:="#FFCC00") - цвет заливки ползунка, если есть ответ  
 *colorNotAnswered* (default:="#f39999") - цвет заливки слайдера, если нет ответа. Стиль для слайдеров без ответа подключается единожды (1 стиль для всех слайдеров на странице) во время подключения первого слайдера  
 
 *sliderOpts* - параметры для построения слайдера (в виде объекта)
 
-**Информация о настройке и использовании sliderOpts**
-Полный список параметров и инструкцию по их использованию можно посмотреть здесь: <a href="http://api.jqueryui.com/" target="_blank">http://api.jqueryui.com/slider/</a>
+**Информация о настройке и использовании sliderOpts**  
+Полный список параметров и инструкцию по их использованию можно посмотреть здесь: <a href="http://api.jqueryui.com/" target="_blank">http://api.jqueryui.com/slider/</a>  
+Дефолтные значения некоторых параметров изменены.  
+
+Cписок измененных параметров:
+```js
+sliderOpts = {
+	min: 1,
+	max: 5,
+	value: (max + min) / 2,
+	animate = true
+};
+```
 
 **Примеры:**
 ```html
