@@ -441,7 +441,7 @@ $(function(){
 </script>
 ```
 
-от 1 до 10 баллов + 11. З/о
+От 1 до 10 баллов + 11. З/о
 ```html
 <link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
 <!--В примере используется доп. стиль для сдвига варианта "Затрудняюсь ответить"-->
@@ -464,7 +464,7 @@ $(function(){
 </script>
 ```
 
-олный набор параметров
+Полный набор параметров
 ```html
 <link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
 <script>
