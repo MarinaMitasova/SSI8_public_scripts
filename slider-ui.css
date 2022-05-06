@@ -1,0 +1,81 @@
+.ui-slider, .ui-slider-handle{
+background-attachment:scroll;
+background-clip:border-box;
+background-origin:padding-box;
+background-position-x:50%;
+background-position-y:50%;
+background-size:auto;
+border-bottom-left-radius:4px;
+border-bottom-right-radius:4px;
+border-bottom-style:solid;
+border-bottom-width:1px;
+border-collapse:separate;
+/*border-image-outset:0px;*/
+/* border-image-repeat:stretch; */
+/* border-image-slice:100%; */
+/* border-image-source:none; */
+/* border-image-width:1; */
+border-left-style:solid;
+border-left-width:1px;
+border-right-style:solid;
+border-right-width:1px;
+border-top-left-radius:4px;
+border-top-right-radius:4px;
+border-top-style:solid;
+border-top-width:1px;
+display:block;
+font-family:Verdana, Arial, sans-serif;
+/*font-size: 1.em;*/
+line-height:normal;
+text-align:left;
+-webkit-border-horizontal-spacing:0px;
+-webkit-border-vertical-spacing:0px;
+}
+.ui-slider{
+background-color:rgb(241, 246, 252);
+/* background-image:url(http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/images/ui-bg_flat_75_ffffff_40x100.png); */
+border-bottom-color:rgb(170, 170, 170);
+border-left-color:rgb(170, 170, 170);
+border-right-color:rgb(170, 170, 170);
+border-top-color:rgb(170, 170, 170);
+color:rgb(34, 34, 34);
+height:1.1em;
+position:relative;
+width: 93%;
+margin-left: auto;
+margin-right: auto;
+}
+.ui-slider-handle, .ui-widget-content .ui-slider-handle, .ui-widget-header .ui-slider-handle{
+/* background-image:url(http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/images/ui-bg_glass_75_dadada_1x400.png); */
+background: rgb(251, 251, 232);
+border-bottom-color:rgb(153, 153, 153);
+border-left-color:rgb(153, 153, 153);
+border-right-color:rgb(153, 153, 153);
+border-top-color:rgb(153, 153, 153);
+color:#3F51B5;
+cursor:pointer;
+font-weight:bold;
+font-style: italic;
+text-align: center;
+height:1.4em;
+left:0px;
+margin-left: -1.3em;
+outline-color:rgb(33, 33, 33);
+outline-style:none;
+outline-width:0px;
+position:absolute;
+top: -.2em;
+width: 2.8em;
+z-index:2;
+}
+
+.ui-tbl-slider td:first-child, .ui-tbl-slider td:last-child{
+    width: 10%;
+    white-space: nowrap;
+}
+.ui-tbl-slider td:first-child{
+    text-align: right;
+}
+.ui-tbl-slider td:last-child{
+    text-align: left;
+}

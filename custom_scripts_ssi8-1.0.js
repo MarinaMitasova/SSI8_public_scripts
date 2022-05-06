@@ -1121,6 +1121,140 @@ function checkAnswerInTable (opts){
 	return err;
 }
 
+function createSlider (opts){
+	checkArguments(arguments, opts);
+
+	var ques = opts.ques + "_div";
+
+	var quesName = opts.ques;
+
+	var sliderOpts = opts.sliderOpts === undefined ? {} : opts.sliderOpts;
+
+	$("#" + ques).find("[type='radio']").each(function(){
+		$(this).parents("tr:first").hide();
+	});
+	
+	$("#" + ques).find(".question_body").prepend("<table width='100%' id='tbl_slider_" + ques + "' cellspacing='0' cellpadding='5' class='ui-tbl-slider'></table>");
+	var $tbl = $("#tbl_slider_" + ques);
+	$tbl.append("<tr><td></td><td></td><td></td></tr>");
+	$tbl.find("td").addClass("row_label");
+	
+	if (opts.labelBefore === undefined){
+		var labelBefore = '<b><font color="#C80000">1 балл</font></b>'
+	}else{
+		labelBefore = opts.labelBefore
+	}
+	if (opts.labelAfter === undefined){
+		var labelAfter = '<b><font color="#008000">5 баллов</font></b>'
+	}else{
+		labelAfter = opts.labelAfter
+	}
+	if (opts.handleVisible === undefined){
+		var handleVisible = true;
+	}else{
+		handleVisible = opts.handleVisible;
+	}
+	if (opts.colorAnswered === undefined){
+		var colorAnswered = "#FFCC00";
+	}else{
+		colorAnswered = opts.colorAnswered;
+	}
+	
+	var notAnswered = opts.colorNotAnswered === undefined ? "#f39999" : opts.colorNotAnswered;
+	if (!$("style[id='createSlider_style']").length){
+		var head = document.querySelector('head');
+		var style = document.createElement("style");
+		style.id="createSlider_style";
+		style.appendChild(document.createTextNode(".createSlider_style_notAnswered{background-color: " + notAnswered + " !important;}"));
+		head.appendChild(style);
+	}
+
+	$tbl.find("tr:first td:first").html(labelBefore);
+	$tbl.find("tr:first td:last").html(labelAfter);
+	$tbl.find("tr:first td:eq(1)").html("<div id='slider_" + ques + "'><div class='ui-slider-handle'></div></div>");
+	
+	
+	if (sliderOpts.min === undefined) sliderOpts.min = 1;
+	if (sliderOpts.max === undefined) sliderOpts.max = 5;
+	if (sliderOpts.value === undefined) {
+		sliderOpts.value = Math.round((sliderOpts.max+sliderOpts.min)/2);
+	}
+	if (sliderOpts.animate === undefined) sliderOpts.animate = true;
+	var handle = $("#slider_" + ques).find(".ui-slider-handle");
+	if (sliderOpts.create === undefined) {
+		sliderOpts.create = function (event, ui){
+			if ($("#" + ques + " [type='radio']:checked").length) {
+				var x = +$("#" + ques + " [type='radio']:checked").attr("id").split("_")[1];
+				if (x != opts.exclusive){
+					$(this).slider("value", x);
+					if (handleVisible) handle.text(x);
+					handle.css("background-color", colorAnswered);
+				}
+			}
+		}
+	}
+	if (sliderOpts.slide === undefined) {
+		sliderOpts.slide = function (event, ui){
+			$("#" + quesName + "_" + ui.value).prop("checked", true);
+			$("#" + quesName + "_" + opts.exclusive + "_graphical").removeClass("radioboxselected").addClass("radiobox");
+			if (handleVisible) handle.text(ui.value);
+			handle.css("background-color", colorAnswered);
+			$("#slider_" + ques).removeClass("createSlider_style_notAnswered");
+		}
+	}
+	
+	if ('onpageshow' in window){window.addEventListener('pageshow', createSlider_on_load, false);} else {window.addEventListener('load', createSlider_on_load, false);}
+	function createSlider_on_load() {$("#slider_" + ques).slider(sliderOpts);}
+	
+	if (opts.handleOnClick === undefined){
+		var handleOnClick = function(){
+			var val = $("#slider_" + ques).slider("option", "value");
+			$("#" + quesName + "_" + val).prop("checked", true);
+			$("#" + quesName + "_" + opts.exclusive + "_graphical").removeClass("radioboxselected").addClass("radiobox");
+			if (handleVisible) handle.text(val);
+			handle.css("background-color", colorAnswered);
+			$("#slider_" + ques).removeClass("createSlider_style_notAnswered");
+		}
+	}else{
+		handleOnClick = opts.handleOnClick;
+	}
+	
+	handle.on("click", handleOnClick);
+	
+	if (opts.exclusive) {
+		//OnError
+		if (Object.prototype.toString.call(opts.exclusive) != "[object Number]"){
+			alert("Ошибка:\nСвойство exclusive должно быть числом!");
+			return false;
+		}
+		//EndOnError
+
+		var $excl = $("#" + quesName + "_" + opts.exclusive);
+		
+		$excl.parents("tr:first").show();
+
+		$excl.parents("tr:first").on("click", function(){
+			handle.text("");
+			handle.css("background-color", "rgb(251, 251, 232)");
+			$("#slider_" + ques).removeClass("createSlider_style_notAnswered");
+		})
+	}
+
+	$("#next_button").on("focus", function(){
+		if ($("#" + ques).find("[type='radio']").length) {
+			if ($("#" + ques).find("[type='radio']:checked").length == 0){
+				$("#slider_" + ques).addClass("createSlider_style_notAnswered");
+			}
+		}
+
+		if ($("#" + ques).find("[type='tel']").length) {
+			if ($("#" + quesName + "_r1_c1").val() == "" && $("#" + quesName + "_r2_c1").val() == ""){
+				$("#slider_" + ques).addClass("createSlider_style_notAnswered");
+			}
+		}
+	})
+}
+
 //Полифиллы, расширения
 Array.prototype.fillRange = function(){
 	try{

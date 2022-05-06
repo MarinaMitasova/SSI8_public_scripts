@@ -17,6 +17,7 @@
 * [prescriptFunnel, prescriptFunnelNoPrescribing](#prescriptFunnel)  
 * [starRating](#starRating)  
 * [checkAnswerInTable](#checkAnswerInTable)  
+* [createSlider](#createSlider)  
 
 [Расширения в custom_scripts_ssi8.js](#custom_scripts_ssi8_Extensions) 
 * [fillRange](#fillRange)
@@ -391,6 +392,94 @@ strErrorMessage = checkAnswerInTable({ques: "[%QUESTIONNAME()%]"});
 strErrorMessage = checkAnswerInTable({ques: "[%QUESTIONNAME()%]", answLocation: "inRows"});
 strErrorMessage = checkAnswerInTable({ques: "[%QUESTIONNAME()%]", answLocation: "inTable"});
 ```
+
+### createSlider(opts)<a name="createSlider"></a>
+
+Создает слайдер для вопроса типа select-radio (вопросы с оценками)
+
+**Особенности работы функции:**
+
+* Аргументы задаются в виде объекта
+* Слайдер расположен в созданной скриптом таблице. Таблица вставляется в начало блока ".question_body" (перед ".inner_table")  
+* Новой таблице назначается класс "ui-tbl-slider" и уникальный id= tbl_slider_<имя вопроса ques>  
+* Для работы скрипта необходимо подключить файл-CSS (в файле <a href="https://marsurvey.ru/public_scripts/slider-ui.css" target="_blank">slider-ui.css</a> оставлены только необходимы стили для слайдера. Там же прописаны стили для созданной скриптом таблицы)
+
+**Свойства объекта-аргумента**
+
+*ques* (обязательный) – имя вопроса  
+*labelBefore* (default:=default:="<b><font color='#C80000'>1 балл</font></b>") – текст метки перед слайдером (подпись левого конца слайдера)  
+*labelAfter* (default:="<b><font color='#008000'>5 баллов</font></b>") – текст метки после слайдера (подпись правого конца слайдера)  
+*exclusive* (default:=undefined) - номер строки для ответа "Затрудняюсь ответить"
+*handleVisible* (default:=true) - видимость выбранного балла на ползунке (true - баллы отображаются, false - баллы НЕ отображаются)  
+*colorAnswered* (default:="#FFCC00") - цвет заливки ползунка, если есть ответ  
+*colorNotAnswered* (default:="#f39999") - цвет заливки слайдера, если нет ответа. Стиль для слайдеров без ответа подключается единожды (1 стиль для всех слайдеров на странице) во время подключения первого слайдера  
+
+*sliderOpts* - параметры для построения слайдера (в виде объекта)
+
+**Информация о настройке и использовании sliderOpts**
+Полный список параметров и инструкцию по их использованию можно посмотреть здесь: <a href="http://api.jqueryui.com/" target="_blank">http://api.jqueryui.com/slider/</a>
+
+**Примеры:**
+```html
+<link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
+<script>
+$(function(){
+	createSlider({"[% QuestionName() %]"});
+})
+</script>
+```
+
+```html
+<!--от 1 до 10 баллов + 11. З/о-->
+<link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
+<!--В примере используется доп. стиль для сдвига варианта "Затрудняюсь ответить"-->
+<style>
+#[% QuestionName() %]_div .inner_table {
+    margin-left: 12%;
+}
+</style>
+<script>
+$(function(){
+	var q = {
+		ques: [%QUESTIONNAME()%].id,
+		labelAfter: '<b><font color="#008000">10 баллов</font></b>',
+		exclusive: 11,
+		sliderOpts: {max: 10}
+	};
+	
+	createSlider(q);
+})
+</script>
+
+```html
+<!--Полный набор параметров-->
+<link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
+<!--В примере используется доп. стиль для сдвига варианта "Затрудняюсь ответить"-->
+<style>
+#[% QuestionName() %]_div .inner_table {
+    margin-left: 12%;
+}
+</style>
+<script>
+$(function(){
+	var q = {
+		ques: "[% QuestionName() %]",
+		labelBefore: "1 балл",
+		labelAfter: "10 баллов",
+		exclusive: 11,
+		handleVisible: true,
+		colorAnswered: "#008080",
+		colorNotAnswered: "#ff8040",
+		sliderOpts: {
+			min: 1,
+			max: 10,
+			value: 1
+		}
+	};
+	
+	createSlider(q);
+})
+</script>
 
 ## Расширения в custom_scripts_ssi8.js<a name="custom_scripts_ssi8_Extensions"></a>
 
