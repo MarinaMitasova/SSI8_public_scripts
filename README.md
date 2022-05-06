@@ -487,6 +487,7 @@ $(function(){
 	createSlider(q);
 })
 </script>
+```
 
 ## Расширения в custom_scripts_ssi8.js<a name="custom_scripts_ssi8_Extensions"></a>
 
