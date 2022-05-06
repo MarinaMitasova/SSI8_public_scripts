@@ -431,6 +431,7 @@ sliderOpts = {
 ```
 
 **Примеры:**
+Основной (все параметры по умолчанию)
 ```html
 <link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
 <script>
@@ -440,8 +441,8 @@ $(function(){
 </script>
 ```
 
+от 1 до 10 баллов + 11. З/о
 ```html
-<!--от 1 до 10 баллов + 11. З/о-->
 <link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
 <!--В примере используется доп. стиль для сдвига варианта "Затрудняюсь ответить"-->
 <style>
@@ -461,16 +462,11 @@ $(function(){
 	createSlider(q);
 })
 </script>
+```
 
+олный набор параметров
 ```html
-<!--Полный набор параметров-->
 <link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
-<!--В примере используется доп. стиль для сдвига варианта "Затрудняюсь ответить"-->
-<style>
-#[% QuestionName() %]_div .inner_table {
-    margin-left: 12%;
-}
-</style>
 <script>
 $(function(){
 	var q = {
