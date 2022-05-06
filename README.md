@@ -430,7 +430,7 @@ sliderOpts = {
 };
 ```
 
-**Примеры:**
+**Примеры:**  
 Основной (все параметры по умолчанию)
 ```html
 <link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
