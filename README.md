@@ -453,7 +453,7 @@ $(function(){
 <script>
 $(function(){
 	var q = {
-		ques: [%QUESTIONNAME()%].id,
+		ques: "[% QuestionName() %]",
 		labelAfter: '<b><font color="#008000">10 баллов</font></b>',
 		exclusive: 11,
 		sliderOpts: {max: 10}
