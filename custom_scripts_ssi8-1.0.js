@@ -571,8 +571,10 @@ function createRank(ques){
 					id = oth.data("id");
 					$("#"+ques+"_div").find("[id='"+id+"']").val(oth.val());
 					if (oth.val() == ""){
-						alert("Впишите ответ в вариант Другое")
-						oth.focus()
+						//alert("Впишите ответ в вариант Другое")
+						//oth.focus()
+						var oth_val = prompt("Впишите ответ в вариант Другое")
+						oth.val(oth_val)
 					}
 				}
 			})
