@@ -355,18 +355,27 @@ return prescriptFunnelNoPrescribing("[%QUESTIONNAME()%]");
 **Особенности работы функции:**
 
 * Работает на вопросах типа **Select Radio**
-* Количество колонок (Number of Columns) установить равным количеству оценок (5 для 5-балльной шкалы, 7 для 7-былльной и т.д.)  
+* Количество колонок (Number of Columns) установить равным количеству вариантов ответа (5 для 5-балльной шкалы, 7 для 7-былльной и т.д.), *включая "Зарудняюсь ответить"*  
 * Необходимо подключить CSS-файл starRating.css
 
 **Аргументы**
 
 *ques* (обязательный) – имя вопроса  
+*excl* (default:=не задан) – номер варианта "Затрудняюсь ответить" 
+*excl_text* (default:="Затрудняюсь ответить") – текст варианта "Затрудняюсь ответить".  
 
 **Примеры:**
 ```html
 <link rel="stylesheet" type="text/css" href="https://www.marsurvey.ru/public_scripts/starRating.css">
 <script>
 starRating("[%QUESTIONNAME()%]");
+</script>
+```
+
+```html
+<link rel="stylesheet" type="text/css" href="https://www.marsurvey.ru/public_scripts/starRating.css">
+<script>
+starRating("[%QUESTIONNAME()%]", 11, "Не знаю");
 </script>
 ```
 

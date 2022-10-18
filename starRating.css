@@ -140,3 +140,22 @@ a.icon-hook {
   .starRating .input_cell{
 	  display: none;
   }
+  
+  .starRating_none{
+	background-color: #f4f4f4;
+    border: 1px solid #e5e5e5;
+    width: 200px;
+    display: inline-block;
+    color: #717171;
+    user-select: none;
+    cursor: pointer;
+	padding: 10px;
+	font-style: normal;
+	margin-left: calc(50% - 110px);
+	text-align: center;
+	font-size: 1rem;
+}
+.starRating_none:hover, .starRating_none.selected{
+	background-color: #dadada;
+	border: 1px solid #757575;
+}
