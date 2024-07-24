@@ -574,7 +574,7 @@ function createRank(ques) {
                         var oth_val = prompt("Впишите ответ в вариант Другое")
                         oth.val(oth_val)
                         var id = $(this).data("id");
-                        $("#" + id).val($(this).val())
+                        $("#" + id).val(oth.val())
                     }
                 }
             })
