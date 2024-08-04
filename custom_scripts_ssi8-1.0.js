@@ -497,7 +497,7 @@ function listFilter(opts) {
 function createRank(ques) {
 
     if ($("#" + ques + "_div").length == 0) {
-        throw "Вопрос " + opts.ques + " не найден на странице."
+        throw "Вопрос " + ques + " не найден на странице."
     }
 
     $("#" + ques + "_div .inner_table").removeAttr("border")
@@ -1280,6 +1280,31 @@ function createSlider(opts) {
             }
         }
     })
+}
+
+function checkPSM(questions, currQues) {
+
+    if (!Array.isArray(questions)) { throw "Имена вопросов должны передаваться в виде массива."; }
+    $.each(questions, function (i, id) {
+        if ($("#" + id).length == 0) { throw "Вопрос " + $(this) + " не найден на странице."; }
+    })
+
+    var indexes = [];
+    $.each(questions, function (i, id) {
+        var qDiv = $("#" + id).parents(".question")
+        indexes.push($(".question").filter(":not(.text):visible").index(qDiv) + 1)
+    })
+
+    var indexCurr = questions.indexOf(currQues)
+
+    if (questions[indexCurr - 1] && SSI_GetValue(questions[indexCurr - 1]) >= SSI_GetValue(questions[indexCurr])) {
+        return "Ответ на вопрос должен быть больше ответа на вопрос №" + indexes[indexCurr - 1] + "."
+    }
+    if (questions[indexCurr + 1] && SSI_GetValue(questions[indexCurr]) >= SSI_GetValue(questions[indexCurr + 1])) {
+        return "Ответ на вопрос должен быть меньше ответа на вопрос №" + indexes[indexCurr + 1] + "."
+    }
+
+    return "";
 }
 
 //Полифиллы, расширения
