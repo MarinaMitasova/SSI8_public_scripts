@@ -568,7 +568,7 @@ changeHowManyOfThem({ques: "[%QUESTIONNAME()%]"});
 var opts = {
     ques: "[%QUESTIONNAME()%]", 
     answLocation: "inRows", 
-    colsOrRowsInDescendingOrder: [2, 4, 5], 
+    colsOrRowsInDescendingOrder: [4, 2, 5], 
     hiddenValue: 0
 }
 
@@ -612,11 +612,11 @@ strErrorMessage =
     checkHowManyOfThem({ques: "[%QUESTIONNAME()%]"});
 
 
-//Полный набор параметром
+//Полный набор параметров
 strErrorMessage = checkHowManyOfThem({
     ques: "[%QUESTIONNAME()%]", 
     answLocation: "inRows", 
-    colsOrRowsInDescendingOrder: [2, 4, 5]
+    colsOrRowsInDescendingOrder: [4, 2, 5]
     });
 ```
 
