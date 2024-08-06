@@ -854,7 +854,7 @@ function existAnswerForOtherSpecify(ques) {
     other.each(function (i, oth) {
         if (oth.value !== "") {
             var row = oth.id.match(/_r\d+_/g)[0].replace(/[r_]/g, "");
-            var selector1 = "input[id^='" + ques + "_r" + row + "']:not([id$=_other]:not([id$=_total])",
+            var selector1 = "input[id^='" + ques + "_r" + row + "']:not([id$=_other]):not([id$=_total])",
                 selector2 = "input[id^='" + ques + "_'][id$='_" + row + "']",
                 selector3 = "select[id^='" + ques + "_r" + row + "']";
             var answ = $(selector1)
@@ -1305,6 +1305,214 @@ function checkPSM(questions, currQues) {
     }
 
     return "";
+}
+
+function checkHowManyOfThem(opts) {
+
+    //opts.answLocation = "inColumns". По строкам пока не делала 
+    //opts.colsOrRowsInDescendingOrder = массив из номеров столбцов вопроса на странице по порядку (наприм. [1,2,3])
+
+
+    checkArguments(arguments, opts);
+    var ques = opts.ques;
+
+    var quesDirection = opts.answLocation === undefined ? "inColumns" : opts.answLocation;
+    if (quesDirection != "inRows" && quesDirection != "inColumns") {
+        throw "answLocation может принимать одно из значений: 'inRows' или 'inColumns'."
+    }
+
+    var defaultCols = []
+    if (quesDirection == "inColumns") {
+
+        $(`#${ques}_div .inner_table tr:not(.column_header_row):first`)
+            .find("[type=tel]")
+            .each(function (i, input) {
+                defaultCols.push(input.id.split("_")[2].replace("c", ""))
+            })
+
+    } else {
+
+        var firstCell = $(`#${ques}_div .inner_table tr:not(.column_header_row):first td.input_cell:first`).find("[type=tel]")
+        var colFirstCell = firstCell.attr("id").split("_")[1].replace("r", "")
+
+        $(`[type=tel][id$=_c${colFirstCell}]`)
+            .each(function (i, input) {
+                defaultCols.push(input.id.split("_")[1].replace("r", ""))
+            })
+
+    }
+
+    var colsOrRowsInDescendingOrder = opts.colsOrRowsInDescendingOrder === undefined ? defaultCols : opts.colsOrRowsInDescendingOrder;
+
+    if (!Array.isArray(colsOrRowsInDescendingOrder)) {
+        throw "Номера столбцов / строк для проверки должны передаваться в виде массива в порядке убывания максимально возможного значения.";
+    }
+
+    err = ""
+
+    if (quesDirection == "inColumns") {
+
+        for (let j = 1; j < colsOrRowsInDescendingOrder.length; j++) {
+            let col1 = colsOrRowsInDescendingOrder[j - 1], col2 = colsOrRowsInDescendingOrder[j];
+
+            $(`[id^='${ques}][id$='_c${col2}'][type='tel']`).each(function (i, e) {
+                var r = this.id.split("_")[1].replace("r", "");
+                let inp1 = $(`#${ques}_r${r}_c${col1}`),
+                    inp2 = $(`#${ques}_r${r}_c${col2}`);
+
+                if (+inp2.val() > +inp1.val()) {
+                    inp2.focus();
+                    err = `Число в столбце №${j + 1} строке №${i + 1} НЕ может превышать число в столбце №${j}.`;
+                    return false;
+                }
+
+                if (+inp1.val() > 0 && inp2.val() === "" && inp2.is(":visible")) {
+                    inp2.focus();
+                    err = `Введите число пациентов в столбце №${j + 1} строке №${i + 1}.`;
+                    return false;
+                }
+            })
+
+            if (err) break;
+        }
+
+    } else {
+        for (let j = 1; j < colsOrRowsInDescendingOrder.length; j++) {
+            let row1 = colsOrRowsInDescendingOrder[j - 1], row2 = colsOrRowsInDescendingOrder[j];
+
+            $(`[id^='${ques}][id*='_r${row2}_'][type='tel']`).each(function (i, e) {
+                var col = this.id.split("_")[2].replace("c", "");
+                let inp1 = $(`#${ques}_r${row1}_c${col}`),
+                    inp2 = $(`#${ques}_r${row2}_c${col}`);
+
+                if (+inp2.val() > +inp1.val()) {
+                    inp2.focus();
+                    err = `Число в строке №${j + 1} столбце №${i + 1} НЕ может превышать число в строке №${j}.`;
+                    return false;
+                }
+
+                if (+inp1.val() > 0 && inp2.val() === "" && inp2.is(":visible")) {
+                    inp2.focus();
+                    err = `Введите число пациентов в строке №${j + 1} столбце №${i + 1}.`;
+                    return false;
+                }
+            })
+
+            if (err) break;
+        }
+    }
+    return err;
+}
+
+function changeHowManyOfThem(opts) {
+
+    //opts.answLocation = "inColumns".
+    //opts.colsOrRowsInDescendingOrder = массив из номеров столбцов вопроса на странице по порядку (наприм. [1,2,3])
+    //opts.hiddenValue = ""
+
+
+    checkArguments(arguments, opts);
+    var ques = opts.ques;
+
+    var quesDirection = opts.answLocation === undefined ? "inColumns" : opts.answLocation;
+    if (quesDirection != "inRows" && quesDirection != "inColumns") {
+        throw "answLocation может принимать одно из значений: 'inRows' или 'inColumns'."
+    }
+
+    var hiddenValue = opts.hiddenValue === undefined ? "" : opts.hiddenValue;
+
+    var defaultCols = []
+    if (quesDirection == "inColumns") {
+
+        $(`#${ques}_div .inner_table tr:not(.column_header_row):first`)
+            .find("[type=tel]")
+            .each(function (i, input) {
+                defaultCols.push(input.id.split("_")[2].replace("c", ""))
+            })
+
+    } else {
+
+        var firstCell = $(`#${ques}_div .inner_table tr:not(.column_header_row):first td.input_cell:first`).find("[type=tel]")
+        var colFirstCell = firstCell.attr("id").split("_")[1].replace("r", "")
+
+        $(`[type=tel][id$=_c${colFirstCell}]`)
+            .each(function (i, input) {
+                defaultCols.push(input.id.split("_")[1].replace("r", ""))
+            })
+
+    }
+
+    var colsOrRowsInDescendingOrder = opts.colsOrRowsInDescendingOrder === undefined ? defaultCols : opts.colsOrRowsInDescendingOrder;
+
+    if (!Array.isArray(colsOrRowsInDescendingOrder)) {
+        throw "Номера столбцов / строк для проверки должны передаваться в виде массива в порядке убывания максимально возможного значения.";
+    }
+    for (let j = 0; j < colsOrRowsInDescendingOrder.length; j++) {
+        colsOrRowsInDescendingOrder[j] = (colsOrRowsInDescendingOrder[j]).toString()
+    }
+
+    if (quesDirection == "inColumns") {
+
+        $(`[id^='${ques}'][type=tel]`).on("keyup", function () { onKeyupByColumns(this, 0) })
+        $(`[id^='${ques}'][type=tel]`).each(function () { onKeyupByColumns(this, 1) })
+
+    } else {
+
+        $(`[id^='${ques}'][type=tel]`).on("keyup", function () { onKeyupByRows(this, 0) })
+        $(`[id^='${ques}'][type=tel]`).each(function () { onKeyupByRows(this, 1) })
+
+    }
+
+    function onKeyupByColumns(elem, flag) {
+
+        let col = elem.id.split("_")[2].replace("c", "");
+        let nCol = colsOrRowsInDescendingOrder.indexOf(col);
+
+        if (nCol < colsOrRowsInDescendingOrder.length - 1) {
+
+            let r = elem.id.split("_")[1].replace("r", "");
+            if ($(elem).val() > 0) {
+                if ($(`#${ques}_r${r}_c${colsOrRowsInDescendingOrder[nCol + 1]}`).is(":hidden")) {
+                    $(`#${ques}_r${r}_c${colsOrRowsInDescendingOrder[nCol + 1]}`).show()
+                    if (!flag) {
+                        $(`#${ques}_r${r}_c${colsOrRowsInDescendingOrder[nCol + 1]}`).val("")
+                    }
+                }
+            } else {
+                for (let j = nCol + 1; j < colsOrRowsInDescendingOrder.length; j++) {
+                    $(`#${ques}_r${r}_c${colsOrRowsInDescendingOrder[j]}`).hide().val(hiddenValue)
+                }
+            }
+
+        }
+
+    }
+
+    function onKeyupByRows(elem, flag) {
+
+        let row = elem.id.split("_")[1].replace("r", "");
+        let nRow = colsOrRowsInDescendingOrder.indexOf(row);
+
+        if (nRow < colsOrRowsInDescendingOrder.length - 1) {
+
+            let col = elem.id.split("_")[2].replace("c", "");
+            if ($(elem).val() > 0) {
+                if ($(`#${ques}_r${colsOrRowsInDescendingOrder[nRow + 1]}_c${col}`).is(":hidden")) {
+                    $(`#${ques}_r${colsOrRowsInDescendingOrder[nRow + 1]}_c${col}`).show()
+                    if (!flag) {
+                        $(`#${ques}_r${colsOrRowsInDescendingOrder[nRow + 1]}_c${col}`).val("")
+                    }
+                }
+            } else {
+                for (let j = nRow + 1; j < colsOrRowsInDescendingOrder.length; j++) {
+                    $(`#${ques}_r${colsOrRowsInDescendingOrder[j]}_c${col}`).hide().val(hiddenValue)
+                }
+            }
+
+        }
+
+    }
+
 }
 
 //Полифиллы, расширения
