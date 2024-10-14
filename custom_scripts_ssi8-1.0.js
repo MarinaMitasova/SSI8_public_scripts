@@ -316,15 +316,22 @@ function otherByColumnsInTable(opts) {
             }
             if (elOther.prop("checked")) {
                 if (r == other) {
+
                     $("#" + nameOther + "_div").show();
-                    $("#" + nameOther + "_r1_c" + c).show();
-                    if ($("#" + nameOther + "_r1_c" + c).val() == "none") {
-                        $("#" + nameOther + "_r1_c" + c).val("");
-                    }
+
+                    $("[id^=" + nameOther + "][id$=_c" + c + "]").each(function () {
+                        $(this).show();
+                        if ($(this).val() == "none") {
+                            $(this).val("");
+                        }
+                    })
+
                 }
             } else {
-                $("#" + nameOther + "_r1_c" + c).hide();
-                $("#" + nameOther + "_r1_c" + c).val("none");
+                $("[id^=" + nameOther + "][id$=_c" + c + "]").each(function () {
+                    $(this).hide();
+                    $(this).val("none");
+                })
             }
             if ($("#" + nameOther + "_div").find("input[type='text'], textarea").not(":hidden").length == 0) {
                 $("#" + nameOther + "_div").hide();
