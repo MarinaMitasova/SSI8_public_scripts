@@ -979,6 +979,16 @@ function prescriptFunnelNoPrescribing(ques) {
 
 function starRating(ques, excl, excl_text) {
 
+    if ($("#" + ques + "_div").is(".select")) {
+        starRating_select(ques, excl, excl_text)
+    } else if ($("#" + ques + "_div").is(".grid")) {
+        starRating_grid(ques, excl, excl_text)
+    }
+
+}
+
+function starRating_select(ques, excl, excl_text) {
+
     excl_text = excl_text === undefined ? "Затрудняюсь ответить" : excl_text;
 
     $("#" + ques + "_div").addClass("starRating");
@@ -1029,6 +1039,124 @@ function starRating(ques, excl, excl_text) {
             $(".starRating_none").click()
         }
     })
+
+}
+
+function starRating_grid(ques, excl, excl_text) {
+
+    excl_text = excl_text === undefined ? "Затрудняюсь ответить" : excl_text;
+
+    $("#" + ques + "_div").addClass("starRating");
+
+    if (excl) {
+
+        var answ = $("#Scale_div td.clickable").filter(function () {
+            var radio = $(this).find("[type=radio]").attr("id").split("_")[2]
+            return radio != excl;
+        })
+
+        $("#Scale_div td.clickable").each(function () {
+            var col = $(this).find("[type=radio]").attr("id").split("_")[2]
+            var row = $(this).find("[type=radio]").attr("id").split("_")[1].replace("r", "")
+            if (col == excl) {
+                $(this).append('<div id="row_' + row + '" class="starRating_none">' + excl_text + '</div>')
+            }
+        })
+
+
+
+    } else {
+        var answ = $("#" + ques + "_div td.clickable");
+    }
+
+    answ.each(function () {
+
+        id = "star" + $(this).find("[type=radio]").attr("id");
+
+        $(this).append('<a href="#" id="' + id + '" class="contain-icon icon-hook"><svg class="star-icon star-icon-2" version="1.1" width="110%" height="110%" viewBox="0 0 105.602 102.931"><radialGradient id="grad" r="80%"> <stop offset="10%" stop-color="yellow" /><stop offset="95%" stop-color="#ffc107" /></radialGradient><path class="main-star-2" fill="none" stroke="gold" stroke-width="3" stroke-miterlimit="10" d="M52.35,3.11c0.475-0.963,1.253-0.963,1.728,0 l12.211,24.742c0.475,0.963,1.734,1.877,2.796,2.032l27.305,3.968c1.063,0.154,1.303,0.894,0.534,1.644L77.167,54.754	c-0.769,0.75-1.25,2.229-1.068,3.287l4.664,27.194c0.182,1.058-0.448,1.516-1.398,1.016L54.942,73.413	c-0.951-0.5-2.506-0.5-3.456,0L27.064,86.252c-0.951,0.5-1.58,0.043-1.398-1.016l4.664-27.194c0.182-1.058-0.299-2.538-1.068-3.287	L9.504,35.495c-0.769-0.75-0.529-1.489,0.534-1.644l27.305-3.968c1.063-0.154,2.321-1.069,2.796-2.032L52.35,3.11z"/>	<path class="star-dashes-2" fill="#FFFFFF" stroke="gold" stroke-width="5" stroke-linecap="round" stroke-miterlimit="10" d="M20.881,6.26	l6.333,7.333 M103.214,63.961l-9.173-3.122 M78.519,13.835l5.724-7.818 M52.777,100.544l0.048-9.69 M11.823,61.737l-9.436,2.204"/>	M42.681,47.839l6.817,6.817 M63.747,39.016l-14.249,15.64"/></svg></a>')
+    })
+
+    var icons = $("#" + ques + "_div .icon-hook");
+
+    icons.click(function (event) {
+        event.preventDefault();
+        var tmp = this.id.split("_");
+        var i = +tmp[tmp.length - 1];
+        var r = tmp[1].replace("r", "")
+
+        icons.filter(function () {
+            var tmp = this.id.split("_")
+            var row = this.id.split("_")[1].replace("r", "");
+            return row == r;
+        }).removeClass("active")
+
+        icons.filter(function () {
+            var tmp = this.id.split("_")
+            var row = this.id.split("_")[1].replace("r", "");
+            return tmp[tmp.length - 1] <= i && row == r;
+        }).addClass("active")
+
+        $(".starRating_none#row_" + r).removeClass("selected");
+    })
+
+    $(window).on("load", function () {
+
+        var val_old = $("#" + ques + "_div [type=radio]:checked");
+
+        val_old.each(function () {
+            $("#star" + $(this).attr("id")).click()
+        })
+
+        $(".starRating_none").click(function () {
+
+            var r = $(this).attr("id").split("_")[1]
+
+            $(this).addClass("selected");
+
+            icons.filter(function () {
+                var row = this.id.split("_")[1].replace("r", "");
+                return row == r;
+            }).removeClass("active")
+
+            SSI_SetSelect(ques + "r_" + r + "_" + excl, true)
+        })
+
+        $(".starRating_none").each(function () {
+            var r = $(this).attr("id").split("_")[1]
+
+            if (SSI_GetValue(ques + "_r" + r) == excl) {
+                $(".starRating_none#row_" + r).addClass("selected");
+            }
+        })
+
+    })
+
+    var ques_div = document.querySelector("#" + ques + "_div");
+    var style = document.createElement("style");
+    style.appendChild(document.createTextNode(
+        `svg.star-icon {
+    position: relative;
+}
+a.icon-hook {
+    padding-bottom: 0%;
+    height: auto;
+}
+.starRating .input_cell{
+    display: table-cell;
+}
+.alt_color1 {
+    background: #ffffff;
+}
+.alt_color2 {
+    background: #ffffff;
+}
+.starRating_none{
+    padding: 10px;
+    margin-left: 0%;
+    width: auto;
+}`
+    ));
+    ques_div.appendChild(style);
 
 }
 
