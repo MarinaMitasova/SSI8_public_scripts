@@ -1118,7 +1118,7 @@ function starRating_grid(ques, excl, excl_text) {
                 return row == r;
             }).removeClass("active")
 
-            SSI_SetSelect(ques + "r_" + r + "_" + excl, true)
+            SSI_SetSelect(ques + "_r" + r + "_" + excl, true)
         })
 
         $(".starRating_none").each(function () {
