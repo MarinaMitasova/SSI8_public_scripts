@@ -1154,6 +1154,10 @@ a.icon-hook {
     padding: 10px;
     margin-left: 0%;
     width: auto;
+}
+.starRating.grid .inner_table td{
+	border: 1px solid #fff !important;
+	border-bottom: 1px solid #eeeeee !important;
 }`
     ));
     ques_div.appendChild(style);
