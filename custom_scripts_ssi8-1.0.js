@@ -1158,9 +1158,97 @@ a.icon-hook {
 .starRating.grid .inner_table td{
 	border: 1px solid #fff !important;
 	border-bottom: 1px solid #eeeeee !important;
+}
+@media screen and (max-width: 540px) {
+	.inner_table td {
+	    padding: 10px 0px;
+	}
 }`
     ));
     ques_div.appendChild(style);
+
+}
+
+
+function emojiRating(ques, scale) {
+
+    if (scale === undefined) scale = 11;
+
+    $("#" + ques + "_div")
+        .addClass("emojiRating")
+        .find(".inner_table td:nth-child(n+2)")
+        .hide();
+
+    $("#" + ques + "_div .grid_options").append("<div class='emoji_menu'></div>")
+    $(".emoji_menu").append("<img src='https://marsurvey.ru/public_scripts/emojiRating/smile_default.png'></img>")
+
+    $("#" + ques + "_div .grid_options").append("<div class='emoji_panel'></div>")
+
+    if (scale == 11) {
+        for (let i = 0; i <= 10; i++) {
+            $(".emoji_panel").append("<img src='https://marsurvey.ru/public_scripts/emojiRating/emoji_min/" + i + ".svg'></img>")
+        }
+    } else if (scale == 10) {
+        $.each([0, 1, 2, 3, 4, 5, 6, 7, 8, 10], function (i, n) {
+            $(".emoji_panel").append("<img src='https://marsurvey.ru/public_scripts/emojiRating/emoji_min/" + n + ".svg'></img>")
+        })
+    } else if (scale == 7) {
+        $.each([0, 2, 4, 5, 6, 8, 10], function (i, n) {
+            $(".emoji_panel").append("<img src='https://marsurvey.ru/public_scripts/emojiRating/emoji_min/" + n + ".svg'></img>")
+        })
+    } else if (scale == 5) {
+        $.each([0, 2, 5, 8, 10], function (i, n) {
+            $(".emoji_panel").append("<img src='https://marsurvey.ru/public_scripts/emojiRating/emoji_min/" + n + ".svg'></img>")
+        })
+    } else {
+        throw "Неподдерживаемая размерность шкалы. Доступные размерности: 5, 7, 10, 11."
+    }
+
+    $(".emoji_menu").on("hover click", function (event) {
+
+        event.stopPropagation()
+        $(".emoji_panel").removeClass("visible")
+        var row = $(this).parents("tr:first")
+        row.find(".emoji_panel").addClass("visible")
+
+    })
+
+    $(".emoji_panel img").click(function () {
+
+        var row = $(this).parents("tr:first")
+
+        if (row.find(".emoji_panel").is(".visible")) {
+            row.find(".emoji_panel").removeClass("visible")
+
+            var index = row.find(".emoji_panel img").index($(this)) + 1;
+            var row_num = row.attr("id").split("_")[1]
+
+            SSI_SetSelect(ques + "_" + row_num + "_" + index, true)
+            row.find(".emoji_menu img").attr("src", $(this).attr("src"))
+            row.find(".emoji_menu").addClass("answered")
+        }
+
+    })
+
+    $(document).on("click", function () {
+        $(".emoji_panel").removeClass("visible")
+    })
+
+    $(window).on("load", function () {
+
+        var val_old = $("#" + ques + "_div [type=radio]:checked");
+
+        val_old.each(function () {
+
+            var row = $(this).parents("tr:first")
+            var val = +$(this).attr("id").split("_")[2] - 1
+            var src = row.find(".emoji_panel img")[val].getAttribute("src")
+            row.find(".emoji_menu img").attr("src", src)
+            row.find(".emoji_menu").addClass("answered")
+
+        })
+
+    })
 
 }
 

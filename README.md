@@ -16,6 +16,7 @@
 * [existAnswerForOtherSpecify](#existAnswerForOtherSpecify)  
 * [prescriptFunnel, prescriptFunnelNoPrescribing](#prescriptFunnel)  
 * [starRating](#starRating)  
+* [emojiRating](#emojiRating)  
 * [checkAnswerInTable](#checkAnswerInTable)  
 * [createSlider](#createSlider)  
 * [checkPSM](#checkPSM) 
@@ -369,16 +370,39 @@ return prescriptFunnelNoPrescribing("[%QUESTIONNAME()%]");
 
 **Примеры:**
 ```html
-<link rel="stylesheet" type="text/css" href="https://www.marsurvey.ru/public_scripts/starRating.css">
+<link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/starRating.css">
 <script>
 starRating("[%QUESTIONNAME()%]");
 </script>
 ```
 
 ```html
-<link rel="stylesheet" type="text/css" href="https://www.marsurvey.ru/public_scripts/starRating.css">
+<link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/starRating.css">
 <script>
 starRating("[%QUESTIONNAME()%]", 11, "Не знаю");
+</script>
+```
+
+### emojiRating(ques, scale)<a name="emojiRating"></a>
+
+Вопрос-оценка (шкала) в виде эмодзи-реакций
+
+**Особенности работы функции:**
+
+* Работает на вопросах типа **Grid**, где в строках типа **Select Radio** расположены оцениваемые параметры (препараты, характеристики и т.д), а в столбцах балльная шкала 
+* Поддерживает следующие размерности шкалы оценок: 5, 7, 10, 11 
+* Необходимо подключить CSS-файл emojiRating.css
+
+**Аргументы**
+
+*ques* (обязательный) – имя вопроса  
+*scale* (default:=11) – размерность шкалы 
+
+**Примеры:**
+```html
+<link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/emojiRating.css">
+<script>
+emojiRating("[%QUESTIONNAME()%]", 7);
 </script>
 ```
 
