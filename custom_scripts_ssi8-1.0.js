@@ -588,6 +588,9 @@ function createRank(ques) {
             blLeft.find(".options, .grid_options").each(function (i, e) {
                 $(this).find(".num").remove()
             })
+
+            var objDiv = document.querySelector("#" + ques + "_div .create_rank.right");
+            objDiv.scrollTop = objDiv.scrollHeight;
         }
     };
 
