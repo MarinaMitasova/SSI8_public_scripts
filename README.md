@@ -616,6 +616,7 @@ changeHowManyOfThem(opts);
 
 *ques* (обязательный) – имя вопроса  
 *answLocation* (default:="inColumns") – расположение ответов в таблице. inRows – требуется дать ответ по строкам, inColumns – требуется дать ответ по столбцам  
+*requiredAnswers* (default:=true) – проверка пустых полей на наличие ответа. true - проверять, false - НЕ проверять.  
 *colsOrRowsInDescendingOrder* (default:=все столбцы / строки вопроса по порядку) – массив из номеров столбцов / строк вопроса, перечисленные в порядке убывания максимально возможного значения (наприм. [1,2,3])  
 
 **Примеры:**
@@ -640,6 +641,7 @@ strErrorMessage =
 strErrorMessage = checkHowManyOfThem({
     ques: "[%QUESTIONNAME()%]", 
     answLocation: "inRows", 
+    requiredAnswers: false,
     colsOrRowsInDescendingOrder: [4, 2, 5]
     });
 ```

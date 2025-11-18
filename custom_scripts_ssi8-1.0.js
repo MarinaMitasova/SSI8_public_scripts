@@ -1545,6 +1545,7 @@ function checkHowManyOfThem(opts) {
 
     checkArguments(arguments, opts);
     var ques = opts.ques;
+    var requiredAnswers = opts.requiredAnswers === undefined ? true : opts.requiredAnswers;
 
     var quesDirection = opts.answLocation === undefined ? "inColumns" : opts.answLocation;
     if (quesDirection != "inRows" && quesDirection != "inColumns") {
@@ -1596,9 +1597,9 @@ function checkHowManyOfThem(opts) {
                     return false;
                 }
 
-                if (+inp1.val() > 0 && inp2.val() === "" && inp2.is(":visible")) {
+                if (requiredAnswers && +inp1.val() > 0 && inp2.val() === "" && inp2.is(":visible")) {
                     inp2.focus();
-                    err = `Введите число пациентов в столбце №${j + 1} строке №${i + 1}.`;
+                    err = `Введите число в столбце №${j + 1} строке №${i + 1}.`;
                     return false;
                 }
             })
@@ -1621,9 +1622,9 @@ function checkHowManyOfThem(opts) {
                     return false;
                 }
 
-                if (+inp1.val() > 0 && inp2.val() === "" && inp2.is(":visible")) {
+                if (requiredAnswers && +inp1.val() > 0 && inp2.val() === "" && inp2.is(":visible")) {
                     inp2.focus();
-                    err = `Введите число пациентов в строке №${j + 1} столбце №${i + 1}.`;
+                    err = `Введите число в строке №${j + 1} столбце №${i + 1}.`;
                     return false;
                 }
             })
