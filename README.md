@@ -23,7 +23,7 @@
 * [changeHowManyOfThem](#changehowmanyofthemopts) 
 * [checkHowManyOfThem](#checkhowmanyofthemopts) 
 
-[Расширения в custom_scripts_ssi8.js](#custom_scripts_ssi8_Extensions) 
+[Расширения в custom_scripts_ssi8.js](#расширения-в-custom_scripts_ssi8js) 
 * [fillRange](#fillRange)
 
 ## Функции в custom_scripts_ssi8.js (последняя версия custom_scripts_ssi8-1.0.js)<a name="custom_scripts_ssi8_js"></a>
