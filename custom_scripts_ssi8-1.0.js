@@ -1746,6 +1746,468 @@ function changeHowManyOfThem(opts) {
 
 }
 
+// Добавляет поисковую строку для множественных вопросов
+function addAnswerSearch(questionId) {
+
+    var $body = $('#' + questionId + '_div .question_body');
+
+    if (!$body.length || $body.find('.answerSearch').length) return;
+
+    // Последний вариант всегда показываем
+    var alwaysShow = [
+        +$body.find("input[type='checkbox']:last").attr("id").split("_")[1]
+    ];
+
+    $('<input>', {
+        type: 'text',
+        class: 'answerSearch',
+        placeholder: 'Поиск...'
+    }).insertBefore($body.find('table:first'));
+
+    $body.find('.answerSearch')
+        .focus()
+        .on('input', function () {
+
+            var words = $(this).val().toLowerCase().trim().split(/\s+/);
+
+            $body.find('tr.clickable').each(function () {
+
+                var $row = $(this);
+                var $input = $row.find('input[type="checkbox"]');
+
+                var text = $row.find('label').text().toLowerCase();
+                var id = $input.attr('id');
+                var code = +id.split("_")[1];
+
+                var found = words.every(function (word) {
+                    return word === '' || text.indexOf(word) !== -1;
+                });
+
+                // Показываем, если найдено или это "Другое"
+                $row.toggle(found || alwaysShow.indexOf(code) !== -1);
+            });
+
+        });
+}
+
+// Ползунок грид. Ввод 2 чисел + боковые значения
+function createRangeSliderNumeric(opts) {
+
+    var ques = opts.ques + "_div";
+    var quesName = opts.ques;
+
+    var sliderOpts = opts.sliderOpts || {};
+
+    var $min = $("#" + quesName + "_r1_c1");
+    var $left = $("#" + quesName + "_r1_c2");
+    var $right = $("#" + quesName + "_r1_c3");
+    var $max = $("#" + quesName + "_r1_c4");
+
+    var rangeLabels = opts.rangeLabels || [
+        "Низкий",
+        "Средний",
+        "Высокий"
+    ];
+
+    var rangeColors = opts.rangeColors || [
+        "#d9534f",
+        "#5cb85c",
+        "#337ab7"
+    ];
+
+    $min.closest(".inner_table").hide();
+
+
+    // значения диапазона
+    sliderOpts.min = sliderOpts.min ?? 0;
+    sliderOpts.max = sliderOpts.max ?? 100;
+
+    sliderOpts.step = sliderOpts.step ?? 1;
+
+
+    // записываем min/max
+    $min.val(sliderOpts.min);
+    $max.val(sliderOpts.max);
+
+
+    // начальные значения
+    var start1 = Number($left.val());
+    var start2 = Number($right.val());
+
+    var start1 = $left.val() === ""
+        ? sliderOpts.min + (sliderOpts.max - sliderOpts.min) / 3
+        : Number($left.val());
+
+    var start2 = $right.val() === ""
+        ? sliderOpts.min + (sliderOpts.max - sliderOpts.min) * 2 / 3
+        : Number($right.val());
+
+    if (sliderOpts.step >= 1) {
+        start1 = Math.round(start1);
+        start2 = Math.round(start2);
+    }
+
+    sliderOpts.values = [
+        start1,
+        start2
+    ];
+
+
+    $("#" + ques + " .question_body").prepend(
+
+        "<table width='100%' id='tbl_slider_" + ques + "' class='ui-tbl-slider'>" +
+
+        "<tr>" +
+
+        "<td class='row_label'>" +
+        (opts.labelBefore || sliderOpts.min) +
+        "</td>" +
+
+        "<td class='row_label'>" +
+
+        "<div class='range-slider-wrapper'>" +
+
+        "<div class='range-labels'>" +
+
+        "<div class='range-label low'>" + rangeLabels[0] + "</div>" +
+        "<div class='range-label middle'>" + rangeLabels[1] + "</div>" +
+        "<div class='range-label high'>" + rangeLabels[2] + "</div>" +
+
+        "</div>" +
+
+        "<div id='slider_" + ques + "'></div>" +
+
+        "</div>" +
+
+        "</td>" +
+
+        "<td class='row_label'>" +
+        (opts.labelAfter || sliderOpts.max) +
+        "</td>" +
+
+        "</tr>" +
+
+        "</table>"
+
+    );
+
+    sliderOpts.range = true;
+
+    var initialized = ($left.val() !== "" || $right.val() !== "");
+
+    sliderOpts.slide = function (event, ui) {
+
+        var handleIndex = $("#slider_" + ques)
+            .find(".ui-slider-handle")
+            .index(ui.handle);
+
+        refreshSlider(ui, true, handleIndex);
+
+    };
+
+    sliderOpts.change = function (event, ui) {
+
+        var handleIndex = $("#slider_" + ques)
+            .find(".ui-slider-handle")
+            .index(ui.handle);
+
+        refreshSlider(ui, true, handleIndex);
+
+    };
+
+    sliderOpts.create = function () {
+
+        if ($left.val() !== "" && $right.val() !== "") {
+
+            refreshSlider({
+                values: [
+                    Number($left.val()),
+                    Number($right.val())
+                ]
+            }, true, -1);
+
+        } else {
+
+            $(this).slider("values", sliderOpts.values);
+
+            refreshSlider({
+                values: sliderOpts.values
+            }, false, -1);
+
+        }
+
+    };
+
+    $("#slider_" + ques).slider(sliderOpts);
+
+    // ручной ввод
+    $left.add($right).on("change input", function () {
+
+
+        var left = Number($left.val());
+
+        var right = Number($right.val());
+
+
+        if (left < sliderOpts.min)
+            left = sliderOpts.min;
+
+
+        if (right > sliderOpts.max)
+            right = sliderOpts.max;
+
+
+        if (left > right)
+            left = right;
+
+
+        $left.val(left);
+
+        $right.val(right);
+
+
+        $("#slider_" + ques)
+            .slider("values", [left, right]);
+
+    });
+
+    function refreshSlider(ui, answered, handleIndex) {
+
+        var values = ui ?
+            ui.values :
+            $("#slider_" + ques).slider("values");
+
+        var handles = $("#slider_" + ques)
+            .find(".ui-slider-handle");
+
+        if (answered) {
+
+            if (handleIndex === 0) {
+                $left.val(values[0]);
+            } else if (handleIndex === 1) {
+                $right.val(values[1]);
+            } else {
+                $left.val(values[0]);
+                $right.val(values[1]);
+            }
+
+            $(handles[0]).text($left.val());
+            $(handles[1]).text($right.val());
+
+        } else {
+
+            $left.val("");
+            $right.val("");
+
+            $(handles[0]).text("");
+            $(handles[1]).text("");
+
+        }
+
+        updateRangeColors(ques, answered);
+
+    }
+
+    function updateRangeColors(ques, answered) {
+
+        var slider = $("#slider_" + ques);
+
+        if (!answered) {
+            return;
+        }
+
+        var min = slider.slider("option", "min");
+
+        var max = slider.slider("option", "max");
+
+
+        var values = slider.slider("values");
+
+
+        var p1 =
+            (values[0] - min) / (max - min) * 100;
+
+
+        var p2 =
+            (values[1] - min) / (max - min) * 100;
+
+
+        // центры диапазонов
+        var c1 = p1 / 2;
+        var c2 = p1 + (p2 - p1) / 2;
+        var c3 = p2 + (100 - p2) / 2;
+
+        // перемещаем подписи
+        var wrap = slider.closest(".range-slider-wrapper");
+
+        wrap.find(".low").css("left", c1 + "%");
+        wrap.find(".middle").css("left", c2 + "%");
+        wrap.find(".high").css("left", c3 + "%");
+
+
+
+        slider.css(
+            "background",
+
+            "linear-gradient(to right," +
+
+            rangeColors[0] + " 0%," +
+            rangeColors[0] + " " + p1 + "%," +
+
+            rangeColors[1] + " " + p1 + "%," +
+            rangeColors[1] + " " + p2 + "%," +
+
+            rangeColors[2] + " " + p2 + "%," +
+            rangeColors[2] + " 100%)"
+        );
+    }
+}
+
+// Слайдер Numeric. Одно значение
+function createSliderNumeric(opts) {
+
+    var ques = opts.ques + "_div";
+    var quesName = opts.ques;
+
+    var sliderOpts = opts.sliderOpts || {};
+
+    $("#" + ques + " .question_body").prepend(
+        "<table width='100%' id='tbl_slider_" + ques + "' cellspacing='0' cellpadding='5' class='ui-tbl-slider'>" +
+        "<tr>" +
+        "<td class='row_label'></td>" +
+        "<td class='row_label'><div id='slider_" + ques + "'><div class='ui-slider-handle'></div></div></td>" +
+        "<td class='row_label'></td>" +
+        "</tr>" +
+        "</table>"
+    );
+
+    $("#tbl_slider_" + ques + " td:first").html(opts.labelBefore || "");
+    $("#tbl_slider_" + ques + " td:last").html(opts.labelAfter || "");
+
+    var $input = $("#" + quesName);
+    $input.hide();
+
+    var handle = $("#slider_" + ques).find(".ui-slider-handle");
+
+    var handleVisible = opts.handleVisible !== false;
+    var colorAnswered = opts.colorAnswered || "#008080";
+    var colorNotAnswered = opts.colorNotAnswered || "#ff8040";
+
+    sliderOpts.min = sliderOpts.min ?? 0;
+    sliderOpts.max = sliderOpts.max ?? 100;
+    sliderOpts.step = sliderOpts.step ?? 1;
+    sliderOpts.value = sliderOpts.value ?? sliderOpts.min;
+    sliderOpts.animate = opts.animate ?? false;
+    sliderOpts.range = sliderOpts.range ?? "min";
+
+    function refreshSlider(value, answered) {
+
+        value = Number(value);
+
+        if (answered) {
+
+            $input.val(value);
+
+            if (handleVisible)
+                handle.text(value);
+
+            handle.css("background-color", colorAnswered);
+
+            $("#slider_" + ques)
+                .removeClass("createSliderNumeric_style_notAnswered");
+
+        } else {
+
+            $input.val("");
+
+            if (handleVisible)
+                handle.text("");
+
+            handle.css("background-color", "");
+
+        }
+
+    }
+
+    sliderOpts.create = function () {
+
+        if ($input.val() !== "") {
+
+            var val = Number($input.val());
+
+            $(this).slider("value", val);
+
+            refreshSlider(val, true);
+
+        } else {
+
+            $(this).slider("value", sliderOpts.value);
+
+            refreshSlider(sliderOpts.value, false);
+
+        }
+
+    };
+
+    sliderOpts.slide = function (event, ui) {
+
+        refreshSlider(ui.value, true);
+
+    };
+
+    sliderOpts.change = function (event, ui) {
+
+        refreshSlider(ui.value, true);
+
+    };
+
+    $("#slider_" + ques).slider(sliderOpts);
+
+    $input.on("input change", function () {
+
+        var val = parseFloat($(this).val());
+
+        if (isNaN(val))
+            return;
+
+        if (val < sliderOpts.min)
+            val = sliderOpts.min;
+
+        if (val > sliderOpts.max)
+            val = sliderOpts.max;
+
+        $(this).val(val);
+
+        $("#slider_" + ques).slider("value", val);
+
+    });
+
+    // подсветка при отсутствии ответа
+    /*if (!$("style#createSliderNumeric_style").length) {
+
+        $("<style id='createSliderNumeric_style'>")
+            .text(".createSliderNumeric_style_notAnswered{background:" + colorNotAnswered + " !important;}")
+            .appendTo("head");
+
+    }
+
+    $("#next_button").on("focus", function () {
+
+        if ($input.val() === "") {
+
+            $("#slider_" + ques)
+                .addClass("createSliderNumeric_style_notAnswered");
+
+        } else {
+
+            $("#slider_" + ques)
+                .removeClass("createSliderNumeric_style_notAnswered");
+
+        }
+
+    });*/
+}
+
 //Полифиллы, расширения
 Array.prototype.fillRange = function () {
     try {
