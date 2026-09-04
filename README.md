@@ -22,6 +22,8 @@
 * [checkPSM](#checkpsmquestions-currques) 
 * [changeHowManyOfThem](#changehowmanyofthemopts) 
 * [checkHowManyOfThem](#checkhowmanyofthemopts) 
+* [createSliderNumeric](#createslidernumericopts)  
+* [createRangeSliderNumeric](#createrangeslidernumericopts)  
 
 [Расширения в custom_scripts_ssi8.js](#расширения-в-custom_scripts_ssi8js) 
 * [fillRange](#fillRange)
@@ -698,12 +700,6 @@ $(function(){
 Шкала 0–250 с шагом 0.5 и подписями концов:
 ```html
 <link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
-<!--В примере используется доп. стиль для сдвига варианта "Затрудняюсь ответить"-->
-<style>
-#[% QuestionName() %]_div .inner_table {
-    margin-left: 12%;
-}
-</style>
 <script>
 $(function(){
     var q = {
@@ -750,7 +746,150 @@ $(function(){
 ```
 
 
-![Пример работы слайдера](images/slider-preview.png)
+![Пример работы слайдера](images/createSliderNumeric.png)
+
+### createRangeSliderNumeric(opts)
+
+Создаёт диапазонный (двойной) ползунок для числового грид-вопроса — респондент задаёт **два числа** (нижнюю и верхнюю границы диапазона) двумя бегунками. Трек делится на три цветные зоны с подписями.
+
+**Особенности работы функции:**
+
+* Аргументы задаются в виде объекта 
+* Предназначена для **числового грида с одной строкой (r1) и четырьмя колонками (c1–c4)**. Роли колонок: 
+	o	c1 — минимум шкалы (заполняется скриптом автоматически); 
+	o	c2 — нижнее выбранное значение (ответ); 
+	o	c3 — верхнее выбранное значение (ответ); 
+	o	c4 — максимум шкалы (заполняется скриптом автоматически). 
+* Исходный грид (*.inner_table*) **скрывается**; ответы пишутся в поля c2/c3, а c1/c4 служат для хранения границ шкалы. 
+* Слайдер располагается в созданной скриптом таблице. Таблица вставляется в начало блока .*question_body* (методом *prepend*), ей назначается класс *ui-tbl-slider* и id *tbl_slider_<имя вопроса>_div*; сам ползунок — *div#slider_<имя вопроса>_div*, обёрнутый в *.range-slider-wrapper* вместе с блоком подписей зон *.range-labels*. 
+* Трек окрашивается в **три зоны** (до нижнего бегунка / между бегунками / после верхнего) через *linear-gradient* цветами *rangeColors*. Подписи зон (*rangeLabels*) размещаются по центрам зон и сдвигаются вместе с бегунками. Раскраска и подписи применяются только когда есть ответ. 
+* Двусторонняя синхронизация: ручной ввод в поля c2/c3 двигает бегунки (с ограничением min ≤ нижнее ≤ верхнее ≤ max). 
+* Логика «дан ли ответ»: если у c2 и c3 уже есть значения — бегунки встают на них, ответ засчитан; если значений нет — бегунки стоят на позициях по умолчанию (примерно ⅓ и ⅔ шкалы), но ответ **не** засчитывается (поля пустые), пока респондент не сдвинет бегунок.
+* •	Для работы необходимы jQuery + jQuery UI (slider в режиме range) и подключённый CSS <a href="https://marsurvey.ru/public_scripts/slider-ui.css" target="_blank">slider-ui.css</a>. В CSS должны присутствовать стили классов range-slider-wrapper, range-labels, range-label (low / middle / high).
+
+**Свойства объекта-аргумента**
+
+*ques* (обязательный) – имя вопроса (числовой грид с колонками c1–c4 в строке r1)  
+*labelBefore* (default:=sliderOpts.min) – текст метки левого конца; если не задан, показывается минимум шкалы  
+*labelAfter* (default:=sliderOpts.max) – текст метки правого конца; если не задан, показывается максимум шкалы  
+*rangeLabels* (default:=["Низкий", "Средний", "Высокий"]) – подписи трёх зон (до нижнего бегунка / между бегунками / после верхнего)  
+*rangeColors* (default:=["#d9534f", "#5cb85c", "#337ab7"]) – цвета заливки трёх зон трека  
+*sliderOpts* – параметры для построения слайдера (в виде объекта)  
+
+**Информация о настройке и использовании sliderOpts**
+
+Полный список параметров и инструкцию можно посмотреть здесь: <a href="https://api.jqueryui.com/" target="_blank">https://api.jqueryui.com/slider/</a>. Дефолтные значения некоторых параметров изменены. 
+
+**CSS** 
+```html
+<style>
+.range-slider-wrapper{
+    position:relative;
+    padding-top:20px;
+}
+
+
+.range-labels{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    display:flex;
+}
+
+
+.range-label{
+    position:absolute;
+    transform:translateX(-50%);
+    white-space:nowrap;
+    font-size:12px;
+    font-weight:bold;
+    transition:left .15s;
+}
+
+
+.ui-slider{
+    height:10px;
+    border:none !important;
+}
+
+
+.ui-slider-range{
+    display:none !important;
+    background:none !important;
+}
+</style>
+```
+
+Список изменённых параметров:
+```js
+sliderOpts = {
+    min: 0,
+    max: 100,
+    step: 1,
+    range: true,                 // двойной ползунок (диапазон)
+    values: [нижнее, верхнее]    // по умолчанию: min + (max-min)/3 и min + (max-min)*2/3
+};
+```
+(если step >= 1, стартовые значения округляются до целого)
+
+
+**Примеры:**  
+Основной (все параметры по умолчанию, шкала 0–100, зоны «Низкий/Средний/Высокий»):
+```html
+<link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
+<script>
+$(function(){
+	createRangeSliderNumeric({ ques: "[% QuestionName() %]" });
+})
+</script>
+```
+
+Своя шкала и подписи зон:
+```html
+<link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
+<script>
+$(function(){
+    var q = {
+        ques: "[% QuestionName() %]",
+        labelBefore: "0",
+        labelAfter: "10",
+        rangeLabels: ["Мало", "Норма", "Много"],
+        sliderOpts: { min: 0, max: 10, step: 1 }
+    };
+
+    createRangeSliderNumeric(q);
+})
+</script>
+```
+
+Полный набор параметров
+```html
+<link rel="stylesheet" type="text/css" href="https://marsurvey.ru/public_scripts/slider-ui.css">
+<script>
+$(function(){
+    var q = {
+        ques: "[% QuestionName() %]",
+        labelBefore: "минимум",
+        labelAfter: "максимум",
+        rangeLabels: ["Низкий", "Средний", "Высокий"],
+        rangeColors: ["#d9534f", "#5cb85c", "#337ab7"],
+        sliderOpts: {
+            min: 0,
+            max: 100,
+            step: 5,
+            values: [30, 70]
+        }
+    };
+
+    createRangeSliderNumeric(q);
+})
+
+</script>
+```
+
+
+![Пример работы слайдера](images/createRangeSliderNumeric.png)
 
 ## Расширения в custom_scripts_ssi8.js<a name="custom_scripts_ssi8_Extensions"></a>
 
